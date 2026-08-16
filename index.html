@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIXEL GRID // Retro Arcade Adventure</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Arcade Aesthetics -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pixel: {
+                            black: '#050508',
+                            dark: '#0e0e17',
+                            blue: '#00f0ff',
+                            red: '#ff0055',
+                            yellow: '#ffe600',
+                            wall: '#1f2041',
+                        }
+                    },
+                    fontFamily: {
+                        arcade: ['"Press Start 2P"', 'cursive'],
+                        retro: ['"Silkscreen"', 'sans-serif'],
+                        vt: ['"VT323"', 'monospace'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'pixel-yellow': '0 0 15px rgba(255, 230, 0, 0.6), 4px 4px 0px #000',
+                        'pixel-blue': '0 0 15px rgba(0, 240, 255, 0.6), 4px 4px 0px #000',
+                        'pixel-red': '0 0 15px rgba(255, 0, 85, 0.6), 4px 4px 0px #000',
+                        'arcade-btn': '4px 4px 0px #000',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Pixel Borders & Retro CRT Overlay Effects */
+        body {
+            background-color: #050508;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+
+        /* Scanline Overlay for Arcade Feel */
+        .crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.25) 50%
+            ), linear-gradient(
+                90deg,
+                rgba(255, 0, 0, 0.03),
+                rgba(0, 255, 0, 0.01),
+                rgba(0, 0, 255, 0.03)
+            );
+            background-size: 100% 3px, 6px 100%;
+            pointer-events: none;
+            z-index: 99;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Pixelated Edges */
+        .pixel-border-blue {
+            border: 4px solid #00f0ff;
+            box-shadow: 0 0 12px rgba(0,240,255,0.4);
+        }
+        .pixel-border-red {
+            border: 4px solid #ff0055;
+            box-shadow: 0 0 12px rgba(255,0,85,0.4);
+        }
+        .pixel-border-yellow {
+            border: 4px solid #ffe600;
+            box-shadow: 0 0 12px rgba(255,230,0,0.4);
+        }
+
+        /* Retro Arcade Button Effects */
+        .btn-retro {
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.1s ease;
+            box-shadow: 4px 4px 0px #000;
+        }
+        .btn-retro:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #000;
+        }
+
+        /* Glitch Text Effect */
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff; }
+            50% { text-shadow: 0 0 15px #ff0055, 0 0 25px #ff0055; }
+        }
+        .glow-title {
+            animation: textGlow 3s infinite alternate;
+        }
+
+        /* Pixel Pulse */
+        @keyframes pixelPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .animate-pulse-slow {
+            animation: pixelPulse 2s infinite ease-in-out;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050508;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00f0ff;
+            border-radius: 0px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ffe600;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-pixel-yellow selection:text-black">
+
+    <!-- Optional CRT Overlay Layer -->
+    <div id="crtOverlay" class="crt-overlay"></div>
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-pixel-black/90 backdrop-blur-md border-b-2 border-pixel-wall">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="#" class="flex items-center space-x-3 group" onclick="playAudio('blip')">
+                <div class="w-10 h-10 bg-pixel-yellow flex items-center justify-center border-2 border-black shadow-[2px_2px_0px_#00f0ff] group-hover:rotate-6 transition-transform">
+                    <div class="w-4 h-4 bg-black clip-path-pacman"></div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-arcade text-lg sm:text-xl text-pixel-yellow tracking-wider">PIXEL<span class="text-pixel-blue">GRID</span></span>
+                    <span class="font-vt text-xs text-pixel-red tracking-widest uppercase">EAT. DODGE. SURVIVE.</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-8 font-retro text-sm uppercase">
+                <a href="#demo" class="text-gray-300 hover:text-pixel-yellow transition-colors hover:underline underline-offset-8 decoration-pixel-yellow" onclick="playAudio('blip')">Arcade Demo</a>
+                <a href="#features" class="text-gray-300 hover:text-pixel-blue transition-colors hover:underline underline-offset-8 decoration-pixel-blue" onclick="playAudio('blip')">Features</a>
+                <a href="#controls" class="text-gray-300 hover:text-pixel-red transition-colors hover:underline underline-offset-8 decoration-pixel-red" onclick="playAudio('blip')">Controls</a>
+                <a href="#leaderboard" class="text-gray-300 hover:text-pixel-yellow transition-colors hover:underline underline-offset-8 decoration-pixel-yellow" onclick="playAudio('blip')">High Scores</a>
+            </nav>
+
+            <!-- Utility Controls & Play Button -->
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <!-- Audio Synth Toggle -->
+                <button id="soundToggleBtn" onclick="toggleAudio()" class="p-2 sm:px-3 sm:py-2 bg-pixel-dark border-2 border-gray-700 hover:border-pixel-blue text-xs font-retro flex items-center space-x-2 text-gray-300 hover:text-white transition-colors" title="Toggle Sound FX">
+                    <i id="soundIcon" class="fas fa-volume-up text-pixel-yellow"></i>
+                    <span class="hidden sm:inline">SFX</span>
+                </button>
+
+                <!-- CRT Scanlines Toggle -->
+                <button onclick="toggleCRT()" class="p-2 sm:px-3 sm:py-2 bg-pixel-dark border-2 border-gray-700 hover:border-pixel-red text-xs font-retro flex items-center space-x-2 text-gray-300 hover:text-white transition-colors" title="Toggle CRT Screen FX">
+                    <i class="fas fa-tv text-pixel-blue"></i>
+                    <span class="hidden sm:inline">CRT</span>
+                </button>
+
+                <!-- CTA Play Demo -->
+                <a href="#demo" onclick="playAudio('coin'); focusCanvas();" class="btn-retro font-arcade text-xs px-4 py-2.5 bg-pixel-yellow text-black border-2 border-black hover:bg-white transition-all shadow-[3px_3px_0px_#00f0ff]">
+                    PLAY NOW
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-10 pb-20 overflow-hidden bg-gradient-to-b from-pixel-black via-pixel-dark to-pixel-black border-b border-pixel-wall">
+        
+        <!-- Decorative Grid Lines -->
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#1f2041_1px,transparent_1px),linear-gradient(to_bottom,#1f2041_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Hero Left Column Text -->
+                <div class="lg:col-span-6 space-y-6 text-center lg:text-left">
+                    
+                    <!-- Retro Tag -->
+                    <div class="inline-flex items-center space-x-2 px-3 py-1.5 bg-pixel-dark border border-pixel-blue/50 text-pixel-blue font-retro text-xs tracking-wider uppercase rounded-none shadow-[2px_2px_0px_#ff0055]">
+                        <span class="w-2 h-2 bg-pixel-red animate-ping rounded-full"></span>
+                        <span>RETRO 8-BIT MAZE SURVIVAL</span>
+                    </div>
+
+                    <!-- Main Headline -->
+                    <h1 class="font-arcade text-2xl sm:text-4xl xl:text-5xl text-white leading-tight">
+                        NAVIGATE THE <span class="text-pixel-yellow glow-title">PIXEL</span> MAZE.
+                    </h1>
+
+                    <!-- Subheadline -->
+                    <p class="font-vt text-xl sm:text-2xl text-gray-300 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                        Outmaneuver relentless <span class="text-pixel-red">Red Specters</span> and unpredictable <span class="text-pixel-blue">Blue Phantoms</span>. Devour yellow power pixels and dominate the leaderboards in this high-octane homage to arcade classics!
+                    </p>
+
+                    <!-- Stat Badges -->
+                    <div class="grid grid-cols-3 gap-3 py-4 max-w-md mx-auto lg:mx-0 border-y border-pixel-wall font-retro text-center">
+                        <div class="p-2 bg-pixel-dark border border-pixel-wall">
+                            <p class="font-arcade text-pixel-yellow text-sm sm:text-base">60 FPS</p>
+                            <p class="text-[10px] text-gray-400 mt-1">ARCADE ENGINE</p>
+                        </div>
+                        <div class="p-2 bg-pixel-dark border border-pixel-wall">
+                            <p class="font-arcade text-pixel-blue text-sm sm:text-base">3 TRIAD</p>
+                            <p class="text-[10px] text-gray-400 mt-1">COLOR FACTIONS</p>
+                        </div>
+                        <div class="p-2 bg-pixel-dark border border-pixel-wall">
+                            <p class="font-arcade text-pixel-red text-sm sm:text-base">100%</p>
+                            <p class="text-[10px] text-gray-400 mt-1">PURE NOSTALGIA</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-4 pt-2">
+                        <a href="#demo" onclick="playAudio('coin'); focusCanvas();" class="w-full sm:w-auto btn-retro font-arcade text-sm px-8 py-4 bg-pixel-yellow text-black border-2 border-black hover:bg-white transition-all text-center flex items-center justify-center space-x-3 shadow-pixel-yellow">
+                            <i class="fas fa-play"></i>
+                            <span>PLAY LIVE DEMO</span>
+                        </a>
+                        
+                        <button onclick="openTrailerModal()" class="w-full sm:w-auto btn-retro font-retro text-sm px-6 py-4 bg-pixel-dark text-gray-200 border-2 border-pixel-blue hover:text-pixel-blue hover:border-pixel-yellow transition-all flex items-center justify-center space-x-2">
+                            <i class="fas fa-film text-pixel-red"></i>
+                            <span>WATCH TRAILER</span>
+                        </button>
+                    </div>
+
+                    <!-- Keyboard Quick Hint -->
+                    <div class="pt-2 text-gray-400 text-xs font-retro flex items-center justify-center lg:justify-start space-x-2">
+                        <i class="fas fa-keyboard text-pixel-yellow"></i>
+                        <span>Use <span class="text-white bg-pixel-wall px-1.5 py-0.5 border border-gray-600">WASD</span> or <span class="text-white bg-pixel-wall px-1.5 py-0.5 border border-gray-600">ARROWS</span> to move your pixel</span>
+                    </div>
+
+                </div>
+
+                <!-- Hero Right Column Arcade Cabinet Frame -->
+                <div class="lg:col-span-6 flex justify-center" id="demo">
+                    <div class="relative w-full max-w-lg bg-pixel-dark border-4 border-pixel-blue p-4 sm:p-6 shadow-[0_0_30px_rgba(0,240,255,0.2)] rounded-none">
+                        
+                        <!-- Cabinet Top Header -->
+                        <div class="flex items-center justify-between bg-pixel-black p-3 border-2 border-pixel-wall mb-4 font-arcade text-xs">
+                            <div class="flex items-center space-x-2 text-pixel-yellow">
+                                <span class="w-3 h-3 bg-pixel-yellow animate-pulse"></span>
+                                <span>SCORE: <span id="gameScoreDisplay" class="text-white">00000</span></span>
+                            </div>
+                            <div class="text-pixel-red flex items-center space-x-1">
+                                <span>LIVES:</span>
+                                <span id="gameLivesDisplay" class="tracking-widest text-pixel-yellow">███</span>
+                            </div>
+                        </div>
+
+                        <!-- Canvas Arcade Display Container -->
+                        <div class="relative aspect-square w-full bg-pixel-black border-2 border-pixel-blue flex items-center justify-center overflow-hidden group">
+                            
+                            <!-- Main Canvas element -->
+                            <canvas id="gameCanvas" width="400" height="400" class="w-full h-full cursor-pointer focus:outline-none" tabindex="0" title="Click to focus arcade controls"></canvas>
+
+                            <!-- Overlay Game Start Prompt -->
+                            <div id="canvasOverlay" class="absolute inset-0 bg-pixel-black/80 flex flex-col items-center justify-center p-6 text-center space-y-4">
+                                <div class="w-16 h-16 bg-pixel-yellow border-2 border-black flex items-center justify-center text-black text-2xl font-arcade animate-bounce shadow-pixel-yellow">
+                                    <i class="fas fa-gamepad"></i>
+                                </div>
+                                <h3 class="font-arcade text-lg text-pixel-yellow">PIXEL GRID MINI DEMO</h3>
+                                <p class="font-vt text-lg text-gray-300">Click below or tap Arrow Keys to start eating pixels!</p>
+                                <button onclick="startGame()" class="btn-retro font-arcade text-xs px-6 py-3 bg-pixel-red text-white border-2 border-black hover:bg-pixel-yellow hover:text-black transition-colors">
+                                    INSERT COIN / START
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Arcade Control Deck Bottom -->
+                        <div class="mt-4 pt-4 border-t-2 border-pixel-wall flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <div class="flex items-center space-x-2 font-vt text-sm text-gray-400">
+                                <span class="w-2.5 h-2.5 bg-pixel-yellow rounded-full inline-block"></span> <span>Player</span>
+                                <span class="w-2.5 h-2.5 bg-pixel-red rounded-full inline-block"></span> <span>Chaser</span>
+                                <span class="w-2.5 h-2.5 bg-pixel-blue rounded-full inline-block"></span> <span>Ambusher</span>
+                            </div>
+                            <button onclick="resetGame()" class="font-retro text-xs text-pixel-yellow hover:underline flex items-center space-x-1">
+                                <i class="fas fa-redo"></i>
+                                <span>RESTART MAZE</span>
+                            </button>
+                        </div>
+
+                        <!-- Touch Controller for Mobile Users -->
+                        <div class="mt-4 pt-3 border-t border-pixel-wall grid grid-cols-3 gap-2 max-w-[200px] mx-auto sm:hidden">
+                            <div></div>
+                            <button onclick="sendInput('UP')" class="p-3 bg-pixel-dark border-2 border-pixel-blue text-pixel-blue active:bg-pixel-blue active:text-black text-center font-arcade text-xs">▲</button>
+                            <div></div>
+                            <button onclick="sendInput('LEFT')" class="p-3 bg-pixel-dark border-2 border-pixel-blue text-pixel-blue active:bg-pixel-blue active:text-black text-center font-arcade text-xs">◀</button>
+                            <button onclick="sendInput('DOWN')" class="p-3 bg-pixel-dark border-2 border-pixel-blue text-pixel-blue active:bg-pixel-blue active:text-black text-center font-arcade text-xs">▼</button>
+                            <button onclick="sendInput('RIGHT')" class="p-3 bg-pixel-dark border-2 border-pixel-blue text-pixel-blue active:bg-pixel-blue active:text-black text-center font-arcade text-xs">▶</button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid Section -->
+    <section id="features" class="py-20 bg-pixel-black border-b border-pixel-wall relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Section Header -->
+            <div class="text-center space-y-4 mb-16">
+                <span class="font-retro text-xs text-pixel-blue tracking-widest uppercase px-3 py-1 bg-pixel-dark border border-pixel-blue">MECHANICS & FACTIONS</span>
+                <h2 class="font-arcade text-2xl sm:text-3xl text-white">TRIAD COLOR SYSTEM</h2>
+                <p class="font-vt text-xl text-gray-400 max-w-2xl mx-auto">Master the dynamic interactions between Yellow, Red, and Blue pixels to survive each maze layer.</p>
+            </div>
+
+            <!-- Feature Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Card 1: Yellow Core -->
+                <div class="bg-pixel-dark p-8 border-2 border-pixel-yellow hover:-translate-y-2 transition-transform duration-200 shadow-[4px_4px_0px_#ffe600]">
+                    <div class="w-14 h-14 bg-pixel-yellow flex items-center justify-center text-black font-arcade text-2xl mb-6 shadow-pixel-yellow">
+                        <i class="fas fa-ghost"></i>
+                    </div>
+                    <span class="font-retro text-xs text-pixel-yellow uppercase tracking-wider">THE PLAYER CORE</span>
+                    <h3 class="font-arcade text-xl text-white mt-2 mb-4">YELLOW CONSUMER</h3>
+                    <p class="font-vt text-lg text-gray-300 leading-relaxed">
+                        Control the agile Yellow Pixel. Swiftly navigate narrow hallways, absorb energizer pellets, and temporarily gain power to turn spectral enemies vulnerable!
+                    </p>
+                    <ul class="mt-6 space-y-2 font-vt text-base text-gray-400 border-t border-pixel-wall pt-4">
+                        <li class="flex items-center space-x-2"><i class="fas fa-check text-pixel-yellow"></i> <span>High velocity corner turns</span></li>
+                        <li class="flex items-center space-x-2"><i class="fas fa-check text-pixel-yellow"></i> <span>Devours power pixels for boost</span></li>
+                    </ul>
+                </div>
+
+                <!-- Card 2: Red Specters -->
+                <div class="bg-pixel-dark p-8 border-2 border-pixel-red hover:-translate-y-2 transition-transform duration-200 shadow-[4px_4px_0px_#ff0055]">
+                    <div class="w-14 h-14 bg-pixel-red flex items-center justify-center text-white font-arcade text-2xl mb-6 shadow-pixel-red">
+                        <i class="fas fa-crosshairs"></i>
+                    </div>
+                    <span class="font-retro text-xs text-pixel-red uppercase tracking-wider">AGGRESSIVE HUNTER</span>
+                    <h3 class="font-arcade text-xl text-white mt-2 mb-4">RED SPECTERS</h3>
+                    <p class="font-vt text-lg text-gray-300 leading-relaxed">
+                        Equipped with direct pathfinding algorithms, Red Specters compute the shortest route to your position. Stay sharp and force them into dead ends!
+                    </p>
+                    <ul class="mt-6 space-y-2 font-vt text-base text-gray-400 border-t border-pixel-wall pt-4">
+                        <li class="flex items-center space-x-2"><i class="fas fa-skull text-pixel-red"></i> <span>Relentless direct pursuit</span></li>
+                        <li class="flex items-center space-x-2"><i class="fas fa-skull text-pixel-red"></i> <span>Speeds up on higher levels</span></li>
+                    </ul>
+                </div>
+
+                <!-- Card 3: Blue Phantoms -->
+                <div class="bg-pixel-dark p-8 border-2 border-pixel-blue hover:-translate-y-2 transition-transform duration-200 shadow-[4px_4px_0px_#00f0ff]">
+                    <div class="w-14 h-14 bg-pixel-blue flex items-center justify-center text-black font-arcade text-2xl mb-6 shadow-pixel-blue">
+                        <i class="fas fa-random"></i>
+                    </div>
+                    <span class="font-retro text-xs text-pixel-blue uppercase tracking-wider">TACTICAL AMBUSHER</span>
+                    <h3 class="font-arcade text-xl text-white mt-2 mb-4">BLUE PHANTOMS</h3>
+                    <p class="font-vt text-lg text-gray-300 leading-relaxed">
+                        Unpredictable tactical foes. Blue Phantoms anticipate where you are heading and cut off escape corridors before you can react!
+                    </p>
+                    <ul class="mt-6 space-y-2 font-vt text-base text-gray-400 border-t border-pixel-wall pt-4">
+                        <li class="flex items-center space-x-2"><i class="fas fa-bolt text-pixel-blue"></i> <span>Intercepts player trajectory</span></li>
+                        <li class="flex items-center space-x-2"><i class="fas fa-bolt text-pixel-blue"></i> <span>Flanking corridor maneuvers</span></li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- How To Play & Controls Section -->
+    <section id="controls" class="py-20 bg-pixel-dark border-b border-pixel-wall">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Info Column -->
+                <div class="lg:col-span-6 space-y-6">
+                    <span class="font-retro text-xs text-pixel-yellow uppercase tracking-widest px-3 py-1 bg-pixel-black border border-pixel-yellow">INPUT GUIDE</span>
+                    <h2 class="font-arcade text-2xl sm:text-3xl text-white">RESPONSIVE ARCADE CONTROLS</h2>
+                    <p class="font-vt text-xl text-gray-300 leading-relaxed">
+                        Whether playing on desktop, tablet, or mobile touchscreen, PIXEL GRID provides ultra-tight 60 FPS input handling with zero latency.
+                    </p>
+
+                    <!-- Key Bindings Matrix -->
+                    <div class="space-y-4 pt-2 font-retro text-sm">
+                        <div class="flex items-center justify-between p-4 bg-pixel-black border border-pixel-wall">
+                            <span class="text-gray-300">MOVE UP</span>
+                            <div class="flex space-x-2">
+                                <kbd class="px-3 py-1 bg-pixel-dark border border-pixel-blue text-pixel-blue font-arcade text-xs">W</kbd>
+                                <kbd class="px-3 py-1 bg-pixel-dark border border-pixel-blue text-pixel-blue font-arcade text-xs">▲</kbd>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-pixel-black border border-pixel-wall">
+                            <span class="text-gray-300">MOVE LEFT</span>
+                            <div class="flex space-x-2">
+                                <kbd class="px-3 py-1 bg-pixel-dark border border-pixel-blue text-pixel-blue font-arcade text-xs">A</kbd>
+                                <kbd class="px-3 py-1 bg-pixel-dark border border-pixel-blue text-pixel-blue font-arcade text-xs">◀</kbd>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-pixel-black border border-pixel-wall">
+                            <span class="text-gray-300">MOVE DOWN</span>
+                            <div class="flex space-x-2">
+                                <kbd class="px-3 py-1 bg-pixel-dark border border-pixel-blue text-pixel-blue font-arcade text-xs">S</kbd>
+                                <kbd class="px-3 py-1 bg-pixel-dark border border-pixel-blue text-pixel-blue font-arcade text-xs">▼</kbd>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-pixel-black border border-pixel-wall">
+                            <span class="text-gray-300">MOVE RIGHT</span>
+                            <div class="flex space-x-2">
+                                <kbd class="px-3 py-1 bg-pixel-dark border border-pixel-blue text-pixel-blue font-arcade text-xs">D</kbd>
+                                <kbd class="px-3 py-1 bg-pixel-dark border border-pixel-blue text-pixel-blue font-arcade text-xs">▶</kbd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Visual Diagram Column -->
+                <div class="lg:col-span-6 flex justify-center">
+                    <div class="w-full bg-pixel-black p-8 border-4 border-pixel-yellow relative shadow-[8px_8px_0px_#000]">
+                        <div class="text-center font-arcade text-xs text-pixel-yellow mb-6">ARCADE STRATEGY TIPS</div>
+                        
+                        <div class="space-y-6 font-vt text-lg">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-8 h-8 bg-pixel-yellow text-black flex-shrink-0 flex items-center justify-center font-arcade text-xs">1</div>
+                                <div>
+                                    <h4 class="text-white font-retro text-sm uppercase">Clear Wall Edges First</h4>
+                                    <p class="text-gray-400">Outer paths offer fewer escape routes. Clear edge pixels early before enemies converge.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="w-8 h-8 bg-pixel-red text-white flex-shrink-0 flex items-center justify-center font-arcade text-xs">2</div>
+                                <div>
+                                    <h4 class="text-white font-retro text-sm uppercase">Bait the Red Specter</h4>
+                                    <p class="text-gray-400">Red chases directly. Lead them into long hallways then double-back using corner shortcuts.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="w-8 h-8 bg-pixel-blue text-black flex-shrink-0 flex items-center justify-center font-arcade text-xs">3</div>
+                                <div>
+                                    <h4 class="text-white font-retro text-sm uppercase">Chain Super Orbs</h4>
+                                    <p class="text-gray-400">Collect large glowing yellow orbs to gain temporary invincibility and turn enemies blue for bonus score!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- High Scores Leaderboard Section -->
+    <section id="leaderboard" class="py-20 bg-pixel-black border-b border-pixel-wall">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center space-y-4 mb-12">
+                <span class="font-retro text-xs text-pixel-red tracking-widest uppercase px-3 py-1 bg-pixel-dark border border-pixel-red">HALL OF FAME</span>
+                <h2 class="font-arcade text-2xl sm:text-3xl text-white">ARCADE LEADERBOARD</h2>
+                <p class="font-vt text-xl text-gray-400">Top arcade legends currently holding the grid record!</p>
+            </div>
+
+            <!-- Leaderboard Table -->
+            <div class="bg-pixel-dark border-4 border-pixel-blue p-4 sm:p-6 shadow-[6px_6px_0px_#000]">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left font-retro text-sm">
+                        <thead>
+                            <tr class="border-b-2 border-pixel-wall text-pixel-yellow text-xs sm:text-sm">
+                                <th class="pb-4">RANK</th>
+                                <th class="pb-4">PLAYER</th>
+                                <th class="pb-4">SCORE</th>
+                                <th class="pb-4 text-right">STAGE</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-pixel-wall font-vt text-lg sm:text-xl text-gray-200">
+                            <tr class="hover:bg-pixel-wall/40 transition-colors">
+                                <td class="py-3 text-pixel-yellow font-arcade text-xs">#1 🏆</td>
+                                <td class="py-3 flex items-center space-x-2">
+                                    <span class="w-3 h-3 bg-pixel-yellow"></span>
+                                    <span>PAC_KING_99</span>
+                                </td>
+                                <td class="py-3 text-pixel-blue font-mono">98,450</td>
+                                <td class="py-3 text-right text-gray-400">STAGE 24</td>
+                            </tr>
+                            <tr class="hover:bg-pixel-wall/40 transition-colors">
+                                <td class="py-3 text-gray-300 font-arcade text-xs">#2 🥈</td>
+                                <td class="py-3 flex items-center space-x-2">
+                                    <span class="w-3 h-3 bg-pixel-red"></span>
+                                    <span>RED_SPECTER</span>
+                                </td>
+                                <td class="py-3 text-pixel-blue font-mono">84,120</td>
+                                <td class="py-3 text-right text-gray-400">STAGE 19</td>
+                            </tr>
+                            <tr class="hover:bg-pixel-wall/40 transition-colors">
+                                <td class="py-3 text-gray-400 font-arcade text-xs">#3 🥉</td>
+                                <td class="py-3 flex items-center space-x-2">
+                                    <span class="w-3 h-3 bg-pixel-blue"></span>
+                                    <span>BLUE_PHANTOM</span>
+                                </td>
+                                <td class="py-3 text-pixel-blue font-mono">72,890</td>
+                                <td class="py-3 text-right text-gray-400">STAGE 16</td>
+                            </tr>
+                            <tr class="hover:bg-pixel-wall/40 transition-colors">
+                                <td class="py-3 text-gray-500 font-arcade text-xs">#4</td>
+                                <td class="py-3 flex items-center space-x-2">
+                                    <span class="w-3 h-3 bg-gray-500"></span>
+                                    <span>NEON_BIT</span>
+                                </td>
+                                <td class="py-3 text-pixel-blue font-mono">65,300</td>
+                                <td class="py-3 text-right text-gray-400">STAGE 14</td>
+                            </tr>
+                            <tr class="hover:bg-pixel-wall/40 transition-colors">
+                                <td class="py-3 text-gray-500 font-arcade text-xs">#5</td>
+                                <td class="py-3 flex items-center space-x-2">
+                                    <span class="w-3 h-3 bg-gray-500"></span>
+                                    <span>PIXEL_PRO_88</span>
+                                </td>
+                                <td class="py-3 text-pixel-blue font-mono">51,900</td>
+                                <td class="py-3 text-right text-gray-400">STAGE 11</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Submit High Score Button -->
+                <div class="mt-6 text-center border-t border-pixel-wall pt-4">
+                    <button onclick="openSubmitModal()" class="btn-retro font-arcade text-xs px-6 py-3 bg-pixel-red text-white border-2 border-black hover:bg-pixel-yellow hover:text-black transition-colors">
+                        SUBMIT YOUR HIGH SCORE
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Community & Reviews -->
+    <section class="py-16 bg-pixel-dark border-b border-pixel-wall">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 font-vt text-lg">
+                
+                <div class="p-6 bg-pixel-black border border-pixel-wall space-y-3">
+                    <div class="text-pixel-yellow text-sm font-arcade">★★★★★</div>
+                    <p class="text-gray-300">"Captures the authentic thrill of 80s arcade gaming with butter-smooth 60fps controls directly in the browser!"</p>
+                    <span class="block text-xs font-retro text-pixel-blue">- RETRO GAMER MAG</span>
+                </div>
+
+                <div class="p-6 bg-pixel-black border border-pixel-wall space-y-3">
+                    <div class="text-pixel-yellow text-sm font-arcade">★★★★★</div>
+                    <p class="text-gray-300">"The red and blue ghost AI mechanics force you to stay focused every second. Absolutely addictive!"</p>
+                    <span class="block text-xs font-retro text-pixel-red">- INDIE ARCADE HUB</span>
+                </div>
+
+                <div class="p-6 bg-pixel-black border border-pixel-wall space-y-3">
+                    <div class="text-pixel-yellow text-sm font-arcade">★★★★★</div>
+                    <p class="text-gray-300">"Simple pixel design (blue, red, yellow) combined with dark neon aesthetics makes this an immediate favorite."</p>
+                    <span class="block text-xs font-retro text-pixel-yellow">- PIXEL QUEST REVIEW</span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-pixel-black py-12 border-t-2 border-pixel-wall">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-pixel-yellow flex items-center justify-center border border-black">
+                    <div class="w-3 h-3 bg-black"></div>
+                </div>
+                <span class="font-arcade text-sm text-pixel-yellow">PIXEL GRID ARCADE</span>
+            </div>
+
+            <div class="font-vt text-lg text-gray-400 text-center">
+                &copy; 2026 PIXEL GRID. Inspired by Classic Arcade Mazes. Built with Pure HTML5 & Canvas.
+            </div>
+
+            <div class="flex space-x-4 text-xl text-gray-400">
+                <a href="#" class="hover:text-pixel-yellow transition-colors" title="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="hover:text-pixel-blue transition-colors" title="Discord"><i class="fab fa-discord"></i></a>
+                <a href="#" class="hover:text-pixel-red transition-colors" title="GitHub"><i class="fab fa-github"></i></a>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Submit Score Modal -->
+    <div id="submitModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-pixel-dark border-4 border-pixel-yellow p-6 sm:p-8 max-w-md w-full shadow-pixel-yellow relative">
+            <button onclick="closeSubmitModal()" class="absolute top-3 right-3 text-gray-400 hover:text-white font-arcade text-xs">✕</button>
+            <h3 class="font-arcade text-lg text-pixel-yellow mb-2">RECORD HIGH SCORE</h3>
+            <p class="font-vt text-lg text-gray-300 mb-6">Enter your 3-letter arcade initials to log your run!</p>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block font-retro text-xs text-gray-400 mb-2">INITIALS</label>
+                    <input type="text" id="playerInitials" maxlength="3" value="PAC" class="w-full bg-pixel-black border-2 border-pixel-wall p-3 font-arcade text-center text-pixel-yellow tracking-widest text-xl uppercase focus:border-pixel-blue outline-none">
+                </div>
+                <div>
+                    <label class="block font-retro text-xs text-gray-400 mb-2">SCORE ACHIEVED</label>
+                    <div id="modalScoreDisplay" class="p-3 bg-pixel-black border border-pixel-wall font-arcade text-pixel-blue text-center text-lg">00000</div>
+                </div>
+                <button onclick="confirmScoreSubmission()" class="w-full btn-retro font-arcade text-xs py-3 bg-pixel-yellow text-black border-2 border-black hover:bg-white transition-colors">
+                    LOG SCORE
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trailer Video Modal -->
+    <div id="trailerModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-pixel-dark border-4 border-pixel-blue p-4 sm:p-6 max-w-2xl w-full relative shadow-pixel-blue">
+            <button onclick="closeTrailerModal()" class="absolute top-3 right-3 text-gray-400 hover:text-white font-arcade text-xs">✕</button>
+            <h3 class="font-arcade text-sm sm:text-base text-pixel-blue mb-4">GAME TRAILER PREVIEW</h3>
+            
+            <!-- Simulated Video Canvas Frame -->
+            <div class="aspect-video bg-pixel-black border-2 border-pixel-wall flex flex-col items-center justify-center relative overflow-hidden">
+                <div class="w-20 h-20 bg-pixel-yellow/20 border-2 border-pixel-yellow rounded-full flex items-center justify-center text-pixel-yellow text-3xl animate-ping">
+                    <i class="fas fa-play"></i>
+                </div>
+                <p class="font-vt text-2xl text-pixel-yellow mt-4">8-BIT ACTION TRAILER</p>
+                <p class="font-retro text-xs text-gray-400">Click below to test live interactive arcade demo!</p>
+            </div>
+
+            <div class="mt-4 text-center">
+                <button onclick="closeTrailerModal(); focusCanvas();" class="btn-retro font-arcade text-xs px-6 py-3 bg-pixel-yellow text-black border-2 border-black">
+                    TRY DEMO INSTEAD
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Retro Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-pixel-dark border-2 border-pixel-yellow p-4 shadow-pixel-yellow font-retro text-xs text-pixel-yellow z-50 transform translate-y-24 opacity-0 transition-all duration-300 flex items-center space-x-3">
+        <i class="fas fa-star text-pixel-yellow"></i>
+        <span id="toastMsg">Score logged to local arcade memory!</span>
+    </div>
+
+    <script>
+        /* -------------------------------------------------------------
+           1. SYNTHESIZED 8-BIT WEB AUDIO SOUND SYSTEM (NO EXTERNAL FILES)
+           ------------------------------------------------------------- */
+        let audioCtx = null;
+        let soundEnabled = true;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+        }
+
+        function playAudio(type) {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+
+                if (type === 'blip') {
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.05);
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'eat') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(300, now);
+                    osc.frequency.exponentialRampToValueAtTime(600, now + 0.08);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else if (type === 'coin') {
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(987.77, now);
+                    osc.frequency.setValueAtTime(1318.51, now + 0.08);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                } else if (type === 'die') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.linearRampToValueAtTime(80, now + 0.3);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                }
+            } catch (e) {
+                // Audio fallback
+            }
+        }
+
+        function toggleAudio() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('soundIcon');
+            const btn = document.getElementById('soundToggleBtn');
+            if (soundEnabled) {
+                icon.className = 'fas fa-volume-up text-pixel-yellow';
+                showToast("Sound FX Enabled!");
+                playAudio('coin');
+            } else {
+                icon.className = 'fas fa-volume-mute text-gray-500';
+                showToast("Sound FX Muted");
+            }
+        }
+
+        function toggleCRT() {
+            const crt = document.getElementById('crtOverlay');
+            if (crt.style.opacity === '0') {
+                crt.style.opacity = '1';
+                showToast("CRT Filter Enabled");
+            } else {
+                crt.style.opacity = '0';
+                showToast("CRT Filter Disabled");
+            }
+            playAudio('blip');
+        }
+
+        /* -------------------------------------------------------------
+           2. INTERACTIVE CANVAS PAC-MAN STYLE MINI GAME ENGINE
+           ------------------------------------------------------------- */
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Grid setup: 15x15 tiles
+        const GRID_SIZE = 15;
+        const TILE_SIZE = canvas.width / GRID_SIZE;
+
+        // Maze map (1 = Wall, 0 = Dot, 2 = Power Pellet, 9 = Empty)
+        const mazeMapTemplate = [
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,2,0,0,0,0,1,0,0,0,0,0,2,0,1],
+            [1,0,1,1,0,0,1,0,0,1,1,1,0,0,1],
+            [1,0,1,0,0,0,0,0,0,0,0,1,0,0,1],
+            [1,0,0,0,1,1,9,1,1,0,0,0,0,0,1],
+            [1,0,1,0,1,9,9,9,1,0,1,1,0,0,1],
+            [1,0,1,0,9,9,9,9,9,0,1,0,0,0,1],
+            [1,0,0,0,1,9,9,9,1,0,0,0,1,0,1],
+            [1,0,1,0,1,1,1,1,1,0,1,0,1,0,1],
+            [1,0,1,0,0,0,0,0,0,0,1,0,0,0,1],
+            [1,0,1,1,1,0,1,0,1,1,1,0,1,0,1],
+            [1,0,0,0,0,0,1,0,0,0,0,0,1,0,1],
+            [1,0,1,1,0,1,1,1,0,1,1,0,1,0,1],
+            [1,2,0,0,0,0,0,0,0,0,0,0,0,2,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+        ];
+
+        let maze = [];
+        let score = 0;
+        let lives = 3;
+        let gameRunning = false;
+        let animFrameId = null;
+
+        // Player (Yellow Pixel)
+        let player = {
+            x: 1,
+            y: 1,
+            dirX: 0,
+            dirY: 0,
+            nextDirX: 0,
+            nextDirY: 0,
+            color: '#ffe600'
+        };
+
+        // Red Specter Ghost
+        let redGhost = {
+            x: 7,
+            y: 6,
+            color: '#ff0055',
+            moveTimer: 0
+        };
+
+        // Blue Phantom Ghost
+        let blueGhost = {
+            x: 7,
+            y: 7,
+            color: '#00f0ff',
+            moveTimer: 0
+        };
+
+        function resetMazeData() {
+            maze = JSON.parse(JSON.stringify(mazeMapTemplate));
+            player.x = 1;
+            player.y = 1;
+            player.dirX = 0;
+            player.dirY = 0;
+            player.nextDirX = 0;
+            player.nextDirY = 0;
+
+            redGhost.x = 7;
+            redGhost.y = 5;
+
+            blueGhost.x = 7;
+            blueGhost.y = 7;
+        }
+
+        function startGame() {
+            document.getElementById('canvasOverlay').classList.add('hidden');
+            score = 0;
+            lives = 3;
+            updateHUD();
+            resetMazeData();
+            gameRunning = true;
+            focusCanvas();
+            playAudio('coin');
+
+            if (animFrameId) cancelAnimationFrame(animFrameId);
+            lastTime = performance.now();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function resetGame() {
+            score = 0;
+            lives = 3;
+            updateHUD();
+            resetMazeData();
+            gameRunning = true;
+            document.getElementById('canvasOverlay').classList.add('hidden');
+            focusCanvas();
+            playAudio('coin');
+        }
+
+        function focusCanvas() {
+            canvas.focus();
+        }
+
+        function updateHUD() {
+            document.getElementById('gameScoreDisplay').innerText = score.toString().padStart(5, '0');
+            document.getElementById('modalScoreDisplay').innerText = score.toString().padStart(5, '0');
+            let livesStr = '';
+            for(let i = 0; i < lives; i++) livesStr += '█ ';
+            document.getElementById('gameLivesDisplay').innerText = livesStr || 'GAMEOVER';
+        }
+
+        let lastTime = 0;
+        const moveInterval = 180; // milliseconds per grid step
+        let stepAccumulator = 0;
+
+        function gameLoop(time) {
+            if (!gameRunning) return;
+
+            const delta = time - lastTime;
+            lastTime = time;
+            stepAccumulator += delta;
+
+            if (stepAccumulator >= moveInterval) {
+                stepAccumulator = 0;
+                updateGameLogic();
+            }
+
+            renderGame();
+            animFrameId = requestAnimationFrame(gameLoop);
+        }
+
+        function isWall(x, y) {
+            if (x < 0 || x >= GRID_SIZE || y < 0 || y >= GRID_SIZE) return true;
+            return maze[y][x] === 1;
+        }
+
+        function updateGameLogic() {
+            // Apply requested buffered direction if valid
+            if (player.nextDirX !== 0 || player.nextDirY !== 0) {
+                if (!isWall(player.x + player.nextDirX, player.y + player.nextDirY)) {
+                    player.dirX = player.nextDirX;
+                    player.dirY = player.nextDirY;
+                }
+            }
+
+            // Move player
+            if (!isWall(player.x + player.dirX, player.y + player.dirY)) {
+                player.x += player.dirX;
+                player.y += player.dirY;
+
+                // Check dot collection
+                const currentTile = maze[player.y][player.x];
+                if (currentTile === 0) {
+                    maze[player.y][player.x] = 9;
+                    score += 10;
+                    playAudio('eat');
+                    updateHUD();
+                } else if (currentTile === 2) {
+                    maze[player.y][player.x] = 9;
+                    score += 50;
+                    playAudio('coin');
+                    updateHUD();
+                }
+            }
+
+            // AI Move Red Ghost (Direct pursuit)
+            moveRedGhost();
+
+            // AI Move Blue Ghost (Random / Ambusher)
+            moveBlueGhost();
+
+            // Collision check
+            if ((player.x === redGhost.x && player.y === redGhost.y) || 
+                (player.x === blueGhost.x && player.y === blueGhost.y)) {
+                handlePlayerDeath();
+            }
+        }
+
+        function moveRedGhost() {
+            const dirs = [
+                {x: 0, y: -1},
+                {x: 0, y: 1},
+                {x: -1, y: 0},
+                {x: 1, y: 0}
+            ];
+
+            let bestDir = null;
+            let minDist = Infinity;
+
+            dirs.forEach(d => {
+                const nx = redGhost.x + d.x;
+                const ny = redGhost.y + d.y;
+                if (!isWall(nx, ny)) {
+                    const dist = Math.hypot(nx - player.x, ny - player.y);
+                    if (dist < minDist) {
+                        minDist = dist;
+                        bestDir = d;
+                    }
+                }
+            });
+
+            if (bestDir) {
+                redGhost.x += bestDir.x;
+                redGhost.y += bestDir.y;
+            }
+        }
+
+        function moveBlueGhost() {
+            const dirs = [
+                {x: 0, y: -1},
+                {x: 0, y: 1},
+                {x: -1, y: 0},
+                {x: 1, y: 0}
+            ].filter(d => !isWall(blueGhost.x + d.x, blueGhost.y + d.y));
+
+            if (dirs.length > 0) {
+                const randomDir = dirs[Math.floor(Math.random() * dirs.length)];
+                blueGhost.x += randomDir.x;
+                blueGhost.y += randomDir.y;
+            }
+        }
+
+        function handlePlayerDeath() {
+            playAudio('die');
+            lives--;
+            updateHUD();
+
+            if (lives <= 0) {
+                gameRunning = false;
+                document.getElementById('canvasOverlay').classList.remove('hidden');
+                openSubmitModal();
+            } else {
+                // Reset positions
+                player.x = 1;
+                player.y = 1;
+                player.dirX = 0;
+                player.dirY = 0;
+                redGhost.x = 7;
+                redGhost.y = 5;
+                blueGhost.x = 7;
+                blueGhost.y = 7;
+            }
+        }
+
+        function renderGame() {
+            // Clear canvas
+            ctx.fillStyle = '#050508';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Render maze grid
+            for (let r = 0; r < GRID_SIZE; r++) {
+                for (let c = 0; c < GRID_SIZE; c++) {
+                    const tile = maze[r][c];
+                    const x = c * TILE_SIZE;
+                    const y = r * TILE_SIZE;
+
+                    if (tile === 1) {
+                        // Wall (Neon Blue Grid border)
+                        ctx.fillStyle = '#1f2041';
+                        ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
+                        ctx.strokeStyle = '#00f0ff';
+                        ctx.lineWidth = 1;
+                        ctx.strokeRect(x + 2, y + 2, TILE_SIZE - 4, TILE_SIZE - 4);
+                    } else if (tile === 0) {
+                        // Dot (Yellow pixel)
+                        ctx.fillStyle = '#ffe600';
+                        ctx.fillRect(x + TILE_SIZE / 2 - 2, y + TILE_SIZE / 2 - 2, 4, 4);
+                    } else if (tile === 2) {
+                        // Power Pellet
+                        ctx.fillStyle = '#ffe600';
+                        ctx.beginPath();
+                        ctx.arc(x + TILE_SIZE / 2, y + TILE_SIZE / 2, 6, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            }
+
+            // Render Player (Yellow Pixel Square / Pacman shape)
+            ctx.fillStyle = player.color;
+            ctx.fillRect(
+                player.x * TILE_SIZE + 3, 
+                player.y * TILE_SIZE + 3, 
+                TILE_SIZE - 6, 
+                TILE_SIZE - 6
+            );
+            // Player glowing center
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(
+                player.x * TILE_SIZE + TILE_SIZE / 2 - 2, 
+                player.y * TILE_SIZE + TILE_SIZE / 2 - 2, 
+                4, 
+                4
+            );
+
+            // Render Red Specter
+            ctx.fillStyle = redGhost.color;
+            ctx.fillRect(
+                redGhost.x * TILE_SIZE + 3, 
+                redGhost.y * TILE_SIZE + 3, 
+                TILE_SIZE - 6, 
+                TILE_SIZE - 6
+            );
+            // Red eyes
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(redGhost.x * TILE_SIZE + 5, redGhost.y * TILE_SIZE + 6, 4, 4);
+            ctx.fillRect(redGhost.x * TILE_SIZE + 15, redGhost.y * TILE_SIZE + 6, 4, 4);
+
+            // Render Blue Phantom
+            ctx.fillStyle = blueGhost.color;
+            ctx.fillRect(
+                blueGhost.x * TILE_SIZE + 3, 
+                blueGhost.y * TILE_SIZE + 3, 
+                TILE_SIZE - 6, 
+                TILE_SIZE - 6
+            );
+            // Blue eyes
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(blueGhost.x * TILE_SIZE + 5, blueGhost.y * TILE_SIZE + 6, 4, 4);
+            ctx.fillRect(blueGhost.x * TILE_SIZE + 15, blueGhost.y * TILE_SIZE + 6, 4, 4);
+        }
+
+        /* -------------------------------------------------------------
+           3. KEYBOARD & TOUCH INPUT LISTENERS
+           ------------------------------------------------------------- */
+        window.addEventListener('keydown', (e) => {
+            const key = e.key.toLowerCase();
+            if (['arrowup', 'w'].includes(key)) {
+                player.nextDirX = 0; player.nextDirY = -1;
+                e.preventDefault();
+            } else if (['arrowdown', 's'].includes(key)) {
+                player.nextDirX = 0; player.nextDirY = 1;
+                e.preventDefault();
+            } else if (['arrowleft', 'a'].includes(key)) {
+                player.nextDirX = -1; player.nextDirY = 0;
+                e.preventDefault();
+            } else if (['arrowright', 'd'].includes(key)) {
+                player.nextDirX = 1; player.nextDirY = 0;
+                e.preventDefault();
+            }
+        });
+
+        function sendInput(dir) {
+            playAudio('blip');
+            if (dir === 'UP') { player.nextDirX = 0; player.nextDirY = -1; }
+            if (dir === 'DOWN') { player.nextDirX = 0; player.nextDirY = 1; }
+            if (dir === 'LEFT') { player.nextDirX = -1; player.nextDirY = 0; }
+            if (dir === 'RIGHT') { player.nextDirX = 1; player.nextDirY = 0; }
+        }
+
+        /* -------------------------------------------------------------
+           4. MODALS & TOAST UI HELPERS
+           ------------------------------------------------------------- */
+        function openSubmitModal() {
+            document.getElementById('submitModal').classList.remove('hidden');
+        }
+
+        function closeSubmitModal() {
+            document.getElementById('submitModal').classList.add('hidden');
+        }
+
+        function confirmScoreSubmission() {
+            const initials = document.getElementById('playerInitials').value.toUpperCase() || 'PAC';
+            showToast(`HIGH SCORE SUBMITTED FOR [${initials}]!`);
+            closeSubmitModal();
+            playAudio('coin');
+        }
+
+        function openTrailerModal() {
+            document.getElementById('trailerModal').classList.remove('hidden');
+            playAudio('blip');
+        }
+
+        function closeTrailerModal() {
+            document.getElementById('trailerModal').classList.add('hidden');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = message;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+
+        // Initialize empty maze canvas preview on load
+        window.onload = function() {
+            resetMazeData();
+            renderGame();
+        };
+    </script>
+</body>
+</html>
