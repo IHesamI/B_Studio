@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boddy Retro Arcade Adventure</title>
+    <title>Boddy - Retro Arcade Maze Escape</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts for Arcade Aesthetics -->
@@ -25,6 +25,7 @@
                             red: '#ff0055',
                             yellow: '#ffe600',
                             wall: '#1f2041',
+                            green: '#00ff66',
                         }
                     },
                     fontFamily: {
@@ -37,6 +38,7 @@
                         'pixel-yellow': '0 0 15px rgba(255, 230, 0, 0.6), 4px 4px 0px #000',
                         'pixel-blue': '0 0 15px rgba(0, 240, 255, 0.6), 4px 4px 0px #000',
                         'pixel-red': '0 0 15px rgba(255, 0, 85, 0.6), 4px 4px 0px #000',
+                        'pixel-green': '0 0 15px rgba(0, 255, 102, 0.6), 4px 4px 0px #000',
                         'arcade-btn': '4px 4px 0px #000',
                     }
                 }
@@ -45,7 +47,6 @@
     </script>
 
     <style>
-        /* Custom Pixel Borders & Retro CRT Overlay Effects */
         body {
             background-color: #050508;
             color: #f3f4f6;
@@ -74,21 +75,6 @@
             transition: opacity 0.3s ease;
         }
 
-        /* Pixelated Edges */
-        .pixel-border-blue {
-            border: 4px solid #00f0ff;
-            box-shadow: 0 0 12px rgba(0,240,255,0.4);
-        }
-        .pixel-border-red {
-            border: 4px solid #ff0055;
-            box-shadow: 0 0 12px rgba(255,0,85,0.4);
-        }
-        .pixel-border-yellow {
-            border: 4px solid #ffe600;
-            box-shadow: 0 0 12px rgba(255,230,0,0.4);
-        }
-
-        /* Retro Arcade Button Effects */
         .btn-retro {
             position: relative;
             text-transform: uppercase;
@@ -101,26 +87,14 @@
             box-shadow: 2px 2px 0px #000;
         }
 
-        /* Glitch Text Effect */
         @keyframes textGlow {
-            0%, 100% { text-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff; }
-            50% { text-shadow: 0 0 15px #ff0055, 0 0 25px #ff0055; }
+            0%, 100% { text-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055; }
+            50% { text-shadow: 0 0 15px #ffe600, 0 0 25px #ffe600; }
         }
         .glow-title {
             animation: textGlow 3s infinite alternate;
         }
 
-        /* Pixel Pulse */
-        @keyframes pixelPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        .animate-pulse-slow {
-            animation: pixelPulse 2s infinite ease-in-out;
-        }
-
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 10px;
         }
@@ -128,47 +102,48 @@
             background: #050508;
         }
         ::-webkit-scrollbar-thumb {
-            background: #00f0ff;
-            border-radius: 0px;
+            background: #ff0055;
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #ffe600;
+        }
+
+        .media-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .media-card:hover {
+            transform: translateY(-4px);
         }
     </style>
 </head>
 <body class="font-sans antialiased selection:bg-pixel-yellow selection:text-black">
 
-    <!-- Optional CRT Overlay Layer -->
     <div id="crtOverlay" class="crt-overlay"></div>
 
     <!-- Navigation Bar -->
     <header class="sticky top-0 z-50 bg-pixel-black/90 backdrop-blur-md border-b-2 border-pixel-wall">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             
-            <!-- Logo -->
             <a href="#" onclick="showPage('home'); playAudio('blip');" class="flex items-center space-x-3 group">
-                <div class="w-10 h-10 bg-pixel-yellow flex items-center justify-center border-2 border-black shadow-[2px_2px_0px_#00f0ff] group-hover:rotate-6 transition-transform">
-                    <div class="w-4 h-4 bg-black clip-path-pacman"></div>
+                <div class="w-10 h-10 bg-pixel-red flex items-center justify-center border-2 border-black shadow-[2px_2px_0px_#ffe600] group-hover:rotate-6 transition-transform">
+                    <div class="w-4 h-4 bg-black"></div>
                 </div>
                 <div class="flex flex-col">
-                    <span class="font-arcade text-lg sm:text-xl text-pixel-yellow tracking-wider">PIXEL<span class="text-pixel-blue">GRID</span></span>
-                    <span class="font-vt text-xs text-pixel-red tracking-widest uppercase">EAT. DODGE. SURVIVE.</span>
+                    <span class="font-arcade text-lg sm:text-xl text-pixel-yellow tracking-wider">BODDY</span>
+                    <span class="font-vt text-xs text-pixel-red tracking-widest uppercase">NAVIGATE. DODGE. SURVIVE.</span>
                 </div>
             </a>
 
-            <!-- Navigation Links -->
             <nav class="hidden md:flex items-center space-x-8 font-retro text-sm uppercase">
-                <a href="#demo" onclick="showPage('home')" class="text-gray-300 hover:text-pixel-yellow transition-colors hover:underline underline-offset-8 decoration-pixel-yellow">Arcade Demo</a>
-                <a href="#features" onclick="showPage('home')" class="text-gray-300 hover:text-pixel-blue transition-colors hover:underline underline-offset-8 decoration-pixel-blue">Features</a>
+                <a href="#demo" onclick="showPage('home')" class="text-gray-300 hover:text-pixel-yellow transition-colors hover:underline underline-offset-8 decoration-pixel-yellow">Demo</a>
+                <a href="#features" onclick="showPage('home')" class="text-gray-300 hover:text-pixel-blue transition-colors hover:underline underline-offset-8 decoration-pixel-blue">Mechanics</a>
+                <a href="#media" onclick="showPage('home')" class="text-gray-300 hover:text-pixel-green transition-colors hover:underline underline-offset-8 decoration-pixel-green">Videos & Shots</a>
                 <a href="#privacy" onclick="showPage('privacy')" class="text-pixel-blue hover:text-pixel-yellow transition-colors hover:underline underline-offset-8 decoration-pixel-yellow">Privacy Policy</a>
             </nav>
 
-            <!-- Utility Controls & Play Button -->
             <div class="flex items-center space-x-3 sm:space-x-4">
-                
-
-                <a href="#demo" onclick="showPage('home'); playAudio('coin'); focusCanvas();" class="btn-retro font-arcade text-xs px-4 py-2.5 bg-pixel-yellow text-black border-2 border-black hover:bg-white transition-all shadow-[3px_3px_0px_#00f0ff]">
-                    PLAY NOW
+                <a href="#demo" onclick="showPage('home'); playAudio('coin'); focusCanvas();" class="btn-retro font-arcade text-xs px-4 py-2.5 bg-pixel-yellow text-black border-2 border-black hover:bg-white transition-all shadow-[3px_3px_0px_#ff0055]">
+                    RUN MAZE
                 </a>
             </div>
         </div>
@@ -182,75 +157,76 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                     <div class="lg:col-span-6 space-y-6 text-center lg:text-left">
-                        <div class="inline-flex items-center space-x-2 px-3 py-1.5 bg-pixel-dark border border-pixel-blue/50 text-pixel-blue font-retro text-xs tracking-wider uppercase shadow-[2px_2px_0px_#ff0055]">
-                            <span class="w-2 h-2 bg-pixel-red animate-ping rounded-full"></span>
-                            <span>RETRO 8-BIT MAZE SURVIVAL</span>
+                        <div class="inline-flex items-center space-x-2 px-3 py-1.5 bg-pixel-dark border border-pixel-red/50 text-pixel-red font-retro text-xs tracking-wider uppercase shadow-[2px_2px_0px_#ffe600]">
+                            <span class="w-2 h-2 bg-pixel-yellow animate-ping rounded-full"></span>
+                            <span>RETRO MAZE ESCAPE ACTION</span>
                         </div>
                         <h1 class="font-arcade text-2xl sm:text-4xl xl:text-5xl text-white leading-tight">
-                            NAVIGATE THE <span class="text-pixel-yellow glow-title">PIXEL</span> MAZE.
+                            FIND THE <span class="text-pixel-yellow glow-title">PATH</span>. ESCAPE THE MAZE.
                         </h1>
                         <p class="font-vt text-xl sm:text-2xl text-gray-300 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                            Outmaneuver relentless <span class="text-pixel-red">Red Specters</span> and unpredictable <span class="text-pixel-blue">Blue Phantoms</span>. Devour yellow power pixels and dominate the leaderboards in this high-octane homage to arcade classics!
+                            Guide <span class="text-pixel-yellow">Boddy</span> through labyrinthine corridors. Dodge deadly traps, evade patrolling hazards, and outrun colossal <span class="text-pixel-red">Boss Monsters</span> to reach the exit gate!
                         </p>
                         <div class="grid grid-cols-3 gap-3 py-4 max-w-md mx-auto lg:mx-0 border-y border-pixel-wall font-retro text-center">
                             <div class="p-2 bg-pixel-dark border border-pixel-wall">
-                                <p class="font-arcade text-pixel-yellow text-sm sm:text-base">60 FPS</p>
-                                <p class="text-[10px] text-gray-400 mt-1">ARCADE ENGINE</p>
+                                <p class="font-arcade text-pixel-yellow text-sm sm:text-base">DYNAMIC</p>
+                                <p class="text-[10px] text-gray-400 mt-1">MAZE LAYOUTS</p>
                             </div>
                             <div class="p-2 bg-pixel-dark border border-pixel-wall">
-                                <p class="font-arcade text-pixel-blue text-sm sm:text-base">3 TRIAD</p>
-                                <p class="text-[10px] text-gray-400 mt-1">COLOR FACTIONS</p>
+                                <p class="font-arcade text-pixel-red text-sm sm:text-base">BOSS</p>
+                                <p class="text-[10px] text-gray-400 mt-1">PURSUIT LEVELS</p>
                             </div>
                             <div class="p-2 bg-pixel-dark border border-pixel-wall">
-                                <p class="font-arcade text-pixel-red text-sm sm:text-base">100%</p>
-                                <p class="text-[10px] text-gray-400 mt-1">PURE NOSTALGIA</p>
+                                <p class="font-arcade text-pixel-blue text-sm sm:text-base">RETRO</p>
+                                <p class="text-[10px] text-gray-400 mt-1">ARCADE STYLES</p>
                             </div>
                         </div>
                         <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-4 pt-2">
                             <a href="#demo" onclick="playAudio('coin'); focusCanvas();" class="w-full sm:w-auto btn-retro font-arcade text-sm px-8 py-4 bg-pixel-yellow text-black border-2 border-black hover:bg-white transition-all text-center flex items-center justify-center space-x-3 shadow-pixel-yellow">
                                 <i class="fas fa-play"></i>
-                                <span>PLAY LIVE DEMO</span>
+                                <span>PLAY MAZE DEMO</span>
                             </a>
                             <button onclick="openTrailerModal()" class="w-full sm:w-auto btn-retro font-retro text-sm px-6 py-4 bg-pixel-dark text-gray-200 border-2 border-pixel-blue hover:text-pixel-blue hover:border-pixel-yellow transition-all flex items-center justify-center space-x-2">
                                 <i class="fas fa-film text-pixel-red"></i>
-                                <span>WATCH TRAILER</span>
+                                <span>PREVIEW GAMEPLAY</span>
                             </button>
                         </div>
                     </div>
+                    
                     <div class="lg:col-span-6 flex justify-center" id="demo">
-                        <div class="relative w-full max-w-lg bg-pixel-dark border-4 border-pixel-blue p-4 sm:p-6 shadow-[0_0_30px_rgba(0,240,255,0.2)]">
+                        <div class="relative w-full max-w-lg bg-pixel-dark border-4 border-pixel-yellow p-4 sm:p-6 shadow-[0_0_30px_rgba(255,230,0,0.2)]">
                             <div class="flex items-center justify-between bg-pixel-black p-3 border-2 border-pixel-wall mb-4 font-arcade text-xs">
                                 <div class="flex items-center space-x-2 text-pixel-yellow">
                                     <span class="w-3 h-3 bg-pixel-yellow animate-pulse"></span>
-                                    <span>SCORE: <span id="gameScoreDisplay" class="text-white">00000</span></span>
+                                    <span>STAGE: <span id="gameStageDisplay" class="text-white">LVL 01</span></span>
                                 </div>
                                 <div class="text-pixel-red flex items-center space-x-1">
-                                    <span>LIVES:</span>
-                                    <span id="gameLivesDisplay" class="tracking-widest text-pixel-yellow">███</span>
+                                    <span>HEALTH:</span>
+                                    <span id="gameLivesDisplay" class="tracking-widest text-pixel-yellow">♥♥♥</span>
                                 </div>
                             </div>
-                            <div class="relative aspect-square w-full bg-pixel-black border-2 border-pixel-blue flex items-center justify-center overflow-hidden group">
+                            <div class="relative aspect-square w-full bg-pixel-black border-2 border-pixel-yellow flex items-center justify-center overflow-hidden group">
                                 <canvas id="gameCanvas" width="400" height="400" class="w-full h-full cursor-pointer focus:outline-none" tabindex="0"></canvas>
-                                <div id="canvasOverlay" class="absolute inset-0 bg-pixel-black/80 flex flex-col items-center justify-center p-6 text-center space-y-4">
+                                <div id="canvasOverlay" class="absolute inset-0 bg-pixel-black/85 flex flex-col items-center justify-center p-6 text-center space-y-4">
                                     <div class="w-16 h-16 bg-pixel-yellow border-2 border-black flex items-center justify-center text-black text-2xl font-arcade animate-bounce shadow-pixel-yellow">
-                                        <i class="fas fa-gamepad"></i>
+                                        <i class="fas fa-compass"></i>
                                     </div>
-                                    <h3 class="font-arcade text-lg text-pixel-yellow">Boddy MINI DEMO</h3>
-                                    <p class="font-vt text-lg text-gray-300">Click below or tap Arrow Keys to start eating pixels!</p>
+                                    <h3 class="font-arcade text-lg text-pixel-yellow">BODDY MAZE DEMO</h3>
+                                    <p class="font-vt text-lg text-gray-300">Use WASD or Arrow Keys to dodge red hazards and reach the yellow exit portal!</p>
                                     <button onclick="startGame()" class="btn-retro font-arcade text-xs px-6 py-3 bg-pixel-red text-white border-2 border-black hover:bg-pixel-yellow hover:text-black transition-colors">
-                                        INSERT COIN / START
+                                        START ESCAPE
                                     </button>
                                 </div>
                             </div>
                             <div class="mt-4 pt-4 border-t-2 border-pixel-wall flex flex-col sm:flex-row items-center justify-between gap-3">
                                 <div class="flex items-center space-x-2 font-vt text-sm text-gray-400">
-                                    <span class="w-2.5 h-2.5 bg-pixel-yellow rounded-full inline-block"></span> <span>Player</span>
-                                    <span class="w-2.5 h-2.5 bg-pixel-red rounded-full inline-block"></span> <span>Chaser</span>
-                                    <span class="w-2.5 h-2.5 bg-pixel-blue rounded-full inline-block"></span> <span>Ambusher</span>
+                                    <span class="w-2.5 h-2.5 bg-pixel-blue rounded-full inline-block"></span> <span>Boddy</span>
+                                    <span class="w-2.5 h-2.5 bg-pixel-red rounded-full inline-block"></span> <span>Hazards</span>
+                                    <span class="w-2.5 h-2.5 bg-pixel-yellow rounded-full inline-block"></span> <span>Exit Gate</span>
                                 </div>
                                 <button onclick="resetGame()" class="font-retro text-xs text-pixel-yellow hover:underline flex items-center space-x-1">
                                     <i class="fas fa-redo"></i>
-                                    <span>RESTART MAZE</span>
+                                    <span>RESET LEVEL</span>
                                 </button>
                             </div>
                         </div>
@@ -263,25 +239,108 @@
         <section id="features" class="py-20 bg-pixel-black border-b border-pixel-wall relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center space-y-4 mb-16">
-                    <span class="font-retro text-xs text-pixel-blue tracking-widest uppercase px-3 py-1 bg-pixel-dark border border-pixel-blue">MECHANICS & FACTIONS</span>
-                    <h2 class="font-arcade text-2xl sm:text-3xl text-white">TRIAD COLOR SYSTEM</h2>
+                    <span class="font-retro text-xs text-pixel-blue tracking-widest uppercase px-3 py-1 bg-pixel-dark border border-pixel-blue">GAMEPLAY ELEMENTS</span>
+                    <h2 class="font-arcade text-2xl sm:text-3xl text-white">MAZE SURVIVAL MECHANICS</h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-pixel-dark p-8 border-2 border-pixel-yellow shadow-[4px_4px_0px_#ffe600]">
-                        <div class="w-14 h-14 bg-pixel-yellow flex items-center justify-center text-black font-arcade text-2xl mb-6"><i class="fas fa-ghost"></i></div>
-                        <h3 class="font-arcade text-xl text-white mb-4">YELLOW CONSUMER</h3>
-                        <p class="font-vt text-lg text-gray-300">Control the agile Yellow Pixel and devour energizer pellets.</p>
+                    <div class="bg-pixel-dark p-8 border-2 border-pixel-blue shadow-[4px_4px_0px_#00f0ff]">
+                        <div class="w-14 h-14 bg-pixel-blue flex items-center justify-center text-black font-arcade text-2xl mb-6"><i class="fas fa-route"></i></div>
+                        <h3 class="font-arcade text-xl text-white mb-4">PATH NAVIGATION</h3>
+                        <p class="font-vt text-lg text-gray-300">Explore complex labyrinthine structures and locate the single correct pathway leading to the level's exit portal.</p>
                     </div>
                     <div class="bg-pixel-dark p-8 border-2 border-pixel-red shadow-[4px_4px_0px_#ff0055]">
-                        <div class="w-14 h-14 bg-pixel-red flex items-center justify-center text-white font-arcade text-2xl mb-6"><i class="fas fa-crosshairs"></i></div>
-                        <h3 class="font-arcade text-xl text-white mb-4">RED SPECTERS</h3>
-                        <p class="font-vt text-lg text-gray-300">Equipped with direct pathfinding algorithms to hunt you down.</p>
+                        <div class="w-14 h-14 bg-pixel-red flex items-center justify-center text-white font-arcade text-2xl mb-6"><i class="fas fa-skull"></i></div>
+                        <h3 class="font-arcade text-xl text-white mb-4">BOSS PURSUITS</h3>
+                        <p class="font-vt text-lg text-gray-300">Survive high-stakes boss encounters where deadly titan hazards actively chase you through narrow corridors.</p>
                     </div>
-                    <div class="bg-pixel-dark p-8 border-2 border-pixel-blue shadow-[4px_4px_0px_#00f0ff]">
-                        <div class="w-14 h-14 bg-pixel-blue flex items-center justify-center text-black font-arcade text-2xl mb-6"><i class="fas fa-random"></i></div>
-                        <h3 class="font-arcade text-xl text-white mb-4">BLUE PHANTOMS</h3>
-                        <p class="font-vt text-lg text-gray-300">Unpredictable tactical foes that attempt to cut off your escape.</p>
+                    <div class="bg-pixel-dark p-8 border-2 border-pixel-yellow shadow-[4px_4px_0px_#ffe600]">
+                        <div class="w-14 h-14 bg-pixel-yellow flex items-center justify-center text-black font-arcade text-2xl mb-6"><i class="fas fa-bolt"></i></div>
+                        <h3 class="font-arcade text-xl text-white mb-4">HAZARD REFLEXES</h3>
+                        <p class="font-vt text-lg text-gray-300">Dodge lethal stationary and moving red entities that block critical intersections and split-second turns.</p>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Media Gallery Section (Videos & Screenshots) -->
+        <section id="media" class="py-20 bg-pixel-dark border-b border-pixel-wall relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                    <div class="space-y-3 text-center md:text-left">
+                        <span class="font-retro text-xs text-pixel-green tracking-widest uppercase px-3 py-1 bg-pixel-black border border-pixel-green">MULTIMEDIA SHOWCASE</span>
+                        <h2 class="font-arcade text-2xl sm:text-3xl text-white">VIDEOS & SCREENSHOTS</h2>
+                        <p class="font-vt text-xl text-gray-400">Get a glimpse of high-speed escapes, boss chases, and labyrinth maps.</p>
+                    </div>
+
+                    <!-- Filter Buttons -->
+                    <div class="flex flex-wrap items-center justify-center gap-2 font-retro text-xs">
+                        <button onclick="filterMedia('all')" id="btn-filter-all" class="px-4 py-2.5 bg-pixel-yellow text-black border-2 border-black font-arcade shadow-[2px_2px_0px_#000]">
+                            ALL MEDIA
+                        </button>
+                        <button onclick="filterMedia('video')" id="btn-filter-video" class="px-4 py-2.5 bg-pixel-black text-gray-300 border-2 border-pixel-wall hover:border-pixel-blue hover:text-pixel-blue transition-colors">
+                            <i class="fas fa-video text-pixel-red mr-1"></i> VIDEOS
+                        </button>
+                        <button onclick="filterMedia('screenshot')" id="btn-filter-screenshot" class="px-4 py-2.5 bg-pixel-black text-gray-300 border-2 border-pixel-wall hover:border-pixel-yellow hover:text-pixel-yellow transition-colors">
+                            <i class="fas fa-image text-pixel-green mr-1"></i> SCREENSHOTS
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Media Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="mediaGrid">
+                    <!-- Video Card 1 -->
+                    <div class="media-card media-item screenshot bg-pixel-black border-2 border-pixel-blue p-4 shadow-[4px_4px_0px_#00ffe0]">
+                        <div class="relative aspect-video bg-pixel-dark border border-pixel-wall overflow-hidden group cursor-pointer"
+                        onclick="openMediaLightbox('image', 'Boss Rush Level 03 Gameplay', 'Watch Boddy navigate intense tight turns while being pursued by the Cyber-Beast boss.', './boss_screen.png')">
+                            <img src="./boss_screen.png" alt="Stage 12 Screenshot" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="absolute inset-0 bg-pixel-black/20 group-hover:bg-transparent transition-colors"></div>
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div class="w-12 h-12 bg-pixel-yellow text-black flex items-center justify-center text-lg font-arcade border-2 border-black">
+                                    <i class="fas fa-search-plus"></i>
+                                </div>
+                            </div>
+                            <span class="absolute top-2 left-2 bg-pixel-yellow text-black font-retro text-[10px] px-2 py-0.5 uppercase font-bold">SCREENSHOT</span>
+                        </div>
+                        <div class="mt-4 space-y-1">
+                            <h3 class="font-arcade text-sm text-white hover:text-pixel-yellow transition-colors">BOSS RUSH LEVEL 03</h3>
+                            <p class="font-vt text-lg text-gray-400">High-speed pursuit mechanics and corner drifts in the Neon Grid.</p>
+                        </div>
+                    </div>
+
+                    <!-- Screenshot Card 1 -->
+                    <div class="media-card media-item screenshot bg-pixel-black border-2 border-pixel-yellow p-4 shadow-[4px_4px_0px_#ffe600]">
+                        <div class="relative aspect-video bg-pixel-dark border border-pixel-wall overflow-hidden group cursor-pointer"
+                        onclick="openMediaLightbox('image', 'Labyrinth Layout - Stage 12', 'Detailed pixel layout of complex wall junctions and trapped pathways.', './screen4.png')">
+                            <img src="./screen4.png" alt="Stage 12 Screenshot" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="absolute inset-0 bg-pixel-black/20 group-hover:bg-transparent transition-colors"></div>
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div class="w-12 h-12 bg-pixel-yellow text-black flex items-center justify-center text-lg font-arcade border-2 border-black">
+                                    <i class="fas fa-search-plus"></i>
+                                </div>
+                            </div>
+                            <span class="absolute top-2 left-2 bg-pixel-yellow text-black font-retro text-[10px] px-2 py-0.5 uppercase font-bold">SCREENSHOT</span>
+                        </div>
+                        <div class="mt-4 space-y-1">
+                            <h3 class="font-arcade text-sm text-white hover:text-pixel-yellow transition-colors">STAGE 12: THE DEEP MAZE</h3>
+                            <p class="font-vt text-lg text-gray-400">Intricate corridors requiring precise memory and timing.</p>
+                        </div>
+                    </div>
+
+
+                    <!-- Screenshot Card 3 -->
+                    <div class="media-card media-item screenshot bg-pixel-black border-2 border-pixel-red p-4 shadow-[4px_4px_0px_#ff0055]">
+                        <div class="relative aspect-video bg-pixel-dark border border-pixel-wall overflow-hidden group cursor-pointer" onclick="openMediaLightbox('image', 'Boss Entity Encounter', 'The Titan Hazard guarding the portal gate in Sector 4.', './screen3.png')">
+                            <img src="./screen3.png" alt="Boss Encounter" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <span class="absolute top-2 left-2 bg-pixel-red text-white font-retro text-[10px] px-2 py-0.5 uppercase font-bold">SCREENSHOT</span>
+                        </div>
+                        <div class="mt-4 space-y-1">
+                            <h3 class="font-arcade text-sm text-white hover:text-pixel-yellow transition-colors">TITAN HAZARD SHOWDOWN</h3>
+                            <p class="font-vt text-lg text-gray-400">Outmaneuver mega bosses in tight quarter dead-ends.</p>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </section>
@@ -305,9 +364,7 @@
 
                 <div class="space-y-8 font-vt text-lg text-gray-300 leading-relaxed">
                     <div>
-                        <h2 class="font-arcade text-base text-pixel-yellow mb-3 flex items-center space-x-2">
-                            <span>1. OVERVIEW & GOOGLE PLAY COMPLIANCE</span>
-                        </h2>
+                        <h2 class="font-arcade text-base text-pixel-yellow mb-3">1. OVERVIEW & GOOGLE PLAY COMPLIANCE</h2>
                         <p>This Privacy Policy applies to the Boddy mobile game. We respect your privacy and are committed to maintaining a secure and transparent gaming environment in accordance with Google Play Developer Policies.</p>
                     </div>
 
@@ -323,7 +380,7 @@
 
                     <div>
                         <h2 class="font-arcade text-base text-pixel-red mb-3">3. NO PERSONAL DATA COLLECTION</h2>
-                        <p>Boddy does <strong class="text-white">NOT</strong> collect, request, or store any Personally Identifiable Information (PII). We do not collect names, email addresses, device contacts, precise location data, phone numbers, or IP addresses. Player identity is tracked exclusively via a randomly generated ID created from timestamp data on your local device.</p>
+                        <p>Boddy does <strong class="text-white">NOT</strong> collect, request, or store any Personally Identifiable Information (PII). We do not collect names, email addresses, device contacts, precise location data, phone numbers, or IP addresses.</p>
                     </div>
 
                     <div>
@@ -334,11 +391,6 @@
                     <div>
                         <h2 class="font-arcade text-base text-pixel-blue mb-3">5. CHILDREN'S PRIVACY</h2>
                         <p>Boddy is designed for general audiences and complies with applicable global privacy standards. Since we do not collect personal data from any users, children's personal information is protected by design.</p>
-                    </div>
-
-                    <div>
-                        <h2 class="font-arcade text-base text-pixel-red mb-3">6. CONTACT US</h2>
-                        <p>If you have questions about this Privacy Policy or analytics processing, please contact us via our developer support channel on GitHub or via our community Discord.</p>
                     </div>
                 </div>
 
@@ -364,68 +416,60 @@
             </div>
 
             <div class="font-vt text-lg text-gray-400 text-center space-y-1">
-                <div>&copy; 2026 BStudio. Inspired by Classic Arcade Mazes.</div>
+                <div>&copy; 2026 BStudio. All Rights Reserved.</div>
                 <div><a href="#privacy" onclick="showPage('privacy')" class="text-pixel-blue hover:text-pixel-yellow underline font-retro text-xs">PRIVACY POLICY</a></div>
             </div>
 
             <div class="flex space-x-4 text-xl text-gray-400">
-                <a href="#" class="hover:text-pixel-yellow transition-colors" title="Twitter"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="hover:text-pixel-blue transition-colors" title="Discord"><i class="fab fa-discord"></i></a>
-                <a href="#" class="hover:text-pixel-red transition-colors" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="#" class="hover:text-pixel-yellow transition-colors"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="hover:text-pixel-blue transition-colors"><i class="fab fa-discord"></i></a>
+                <a href="#" class="hover:text-pixel-red transition-colors"><i class="fab fa-github"></i></a>
             </div>
 
         </div>
     </footer>
 
-    <!-- Submit Score Modal -->
-    <div id="submitModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-pixel-dark border-4 border-pixel-yellow p-6 sm:p-8 max-w-md w-full shadow-pixel-yellow relative">
-            <button onclick="closeSubmitModal()" class="absolute top-3 right-3 text-gray-400 hover:text-white font-arcade text-xs">✕</button>
-            <h3 class="font-arcade text-lg text-pixel-yellow mb-2">RECORD HIGH SCORE</h3>
-            <p class="font-vt text-lg text-gray-300 mb-6">Enter your 3-letter arcade initials to log your run!</p>
-            <div class="space-y-4">
-                <div>
-                    <label class="block font-retro text-xs text-gray-400 mb-2">INITIALS</label>
-                    <input type="text" id="playerInitials" maxlength="3" value="PAC" class="w-full bg-pixel-black border-2 border-pixel-wall p-3 font-arcade text-center text-pixel-yellow tracking-widest text-xl uppercase focus:border-pixel-blue outline-none">
-                </div>
-                <div>
-                    <label class="block font-retro text-xs text-gray-400 mb-2">SCORE ACHIEVED</label>
-                    <div id="modalScoreDisplay" class="p-3 bg-pixel-black border border-pixel-wall font-arcade text-pixel-blue text-center text-lg">00000</div>
-                </div>
-                <button onclick="confirmScoreSubmission()" class="w-full btn-retro font-arcade text-xs py-3 bg-pixel-yellow text-black border-2 border-black hover:bg-white transition-colors">
-                    LOG SCORE
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Trailer Video Modal -->
+    <!-- Video Modal -->
     <div id="trailerModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-pixel-dark border-4 border-pixel-blue p-4 sm:p-6 max-w-2xl w-full relative shadow-pixel-blue">
             <button onclick="closeTrailerModal()" class="absolute top-3 right-3 text-gray-400 hover:text-white font-arcade text-xs">✕</button>
-            <h3 class="font-arcade text-sm sm:text-base text-pixel-blue mb-4">GAME TRAILER PREVIEW</h3>
+            <h3 class="font-arcade text-sm sm:text-base text-pixel-blue mb-4">GAMEPLAY PREVIEW</h3>
             <div class="aspect-video bg-pixel-black border-2 border-pixel-wall flex flex-col items-center justify-center relative overflow-hidden">
                 <div class="w-20 h-20 bg-pixel-yellow/20 border-2 border-pixel-yellow rounded-full flex items-center justify-center text-pixel-yellow text-3xl animate-ping">
                     <i class="fas fa-play"></i>
                 </div>
-                <p class="font-vt text-2xl text-pixel-yellow mt-4">8-BIT ACTION TRAILER</p>
+                <p class="font-vt text-2xl text-pixel-yellow mt-4">MAZE RUNNER TRAILER</p>
             </div>
             <div class="mt-4 text-center">
                 <button onclick="closeTrailerModal(); focusCanvas();" class="btn-retro font-arcade text-xs px-6 py-3 bg-pixel-yellow text-black border-2 border-black">
-                    TRY DEMO INSTEAD
+                    TRY DEMO NOW
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Retro Toast Notification -->
-    <div id="toast" class="fixed bottom-6 right-6 bg-pixel-dark border-2 border-pixel-yellow p-4 shadow-pixel-yellow font-retro text-xs text-pixel-yellow z-50 transform translate-y-24 opacity-0 transition-all duration-300 flex items-center space-x-3">
-        <i class="fas fa-star text-pixel-yellow"></i>
-        <span id="toastMsg">Score logged to local arcade memory!</span>
+    <!-- General Media Lightbox Modal -->
+    <div id="mediaLightboxModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-pixel-dark border-4 border-pixel-yellow p-4 sm:p-6 max-w-3xl w-full relative shadow-[0_0_40px_rgba(255,230,0,0.3)]">
+            <button onclick="closeMediaLightbox()" class="absolute top-3 right-3 text-gray-400 hover:text-pixel-red font-arcade text-base z-10">✕</button>
+            
+            <h3 id="lightboxTitle" class="font-arcade text-base sm:text-lg text-pixel-yellow mb-2 pr-6">MEDIA TITLE</h3>
+            <p id="lightboxDesc" class="font-vt text-lg text-gray-300 mb-4">Media description goes here.</p>
+            
+            <div id="lightboxContent" class="aspect-video bg-pixel-black border-2 border-pixel-wall flex items-center justify-center relative overflow-hidden">
+                <!-- Dynamic Content Insertion -->
+            </div>
+
+            <div class="mt-4 flex items-center justify-between border-t border-pixel-wall pt-3">
+                <span class="font-retro text-xs text-pixel-blue"><i class="fas fa-gamepad mr-1"></i> BODDY MAZE ARCHIVE</span>
+                <button onclick="closeMediaLightbox()" class="btn-retro font-arcade text-xs px-5 py-2 bg-pixel-red text-white border-2 border-black hover:bg-pixel-yellow hover:text-black">
+                    CLOSE
+                </button>
+            </div>
+        </div>
     </div>
 
     <script>
-        /* Page Navigation Logic */
         function showPage(page) {
             const home = document.getElementById('homeView');
             const privacy = document.getElementById('privacyView');
@@ -440,17 +484,12 @@
         }
 
         window.addEventListener('hashchange', () => {
-            if (window.location.hash === '#privacy') {
-                showPage('privacy');
-            } else {
-                showPage('home');
-            }
+            if (window.location.hash === '#privacy') showPage('privacy');
+            else showPage('home');
         });
 
         /* Audio Engine */
         let audioCtx = null;
-        let soundEnabled = true;
-
         function initAudio() {
             if (!audioCtx) {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -459,7 +498,6 @@
         }
 
         function playAudio(type) {
-            if (!soundEnabled) return;
             try {
                 initAudio();
                 if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -470,67 +508,24 @@
                 const now = audioCtx.currentTime;
 
                 if (type === 'blip') {
-                    osc.type = 'square';
-                    osc.frequency.setValueAtTime(440, now);
-                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.05);
-                    gain.gain.setValueAtTime(0.08, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-                    osc.start(now);
-                    osc.stop(now + 0.05);
-                } else if (type === 'eat') {
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(300, now);
-                    osc.frequency.exponentialRampToValueAtTime(600, now + 0.08);
-                    gain.gain.setValueAtTime(0.1, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
-                    osc.start(now);
-                    osc.stop(now + 0.08);
+                    osc.type = 'square'; osc.frequency.setValueAtTime(440, now);
+                    gain.gain.setValueAtTime(0.08, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.start(now); osc.stop(now + 0.05);
                 } else if (type === 'coin') {
-                    osc.type = 'square';
-                    osc.frequency.setValueAtTime(987.77, now);
+                    osc.type = 'square'; osc.frequency.setValueAtTime(987.77, now);
                     osc.frequency.setValueAtTime(1318.51, now + 0.08);
-                    gain.gain.setValueAtTime(0.12, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-                    osc.start(now);
-                    osc.stop(now + 0.25);
+                    gain.gain.setValueAtTime(0.12, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.start(now); osc.stop(now + 0.25);
                 } else if (type === 'die') {
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(400, now);
+                    osc.type = 'sawtooth'; osc.frequency.setValueAtTime(400, now);
                     osc.frequency.linearRampToValueAtTime(80, now + 0.3);
-                    gain.gain.setValueAtTime(0.15, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-                    osc.start(now);
-                    osc.stop(now + 0.3);
+                    gain.gain.setValueAtTime(0.15, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                    osc.start(now); osc.stop(now + 0.3);
                 }
             } catch (e) {}
         }
 
-        function toggleAudio() {
-            soundEnabled = !soundEnabled;
-            const icon = document.getElementById('soundIcon');
-            if (soundEnabled) {
-                icon.className = 'fas fa-volume-up text-pixel-yellow';
-                showToast("Sound FX Enabled!");
-                playAudio('coin');
-            } else {
-                icon.className = 'fas fa-volume-mute text-gray-500';
-                showToast("Sound FX Muted");
-            }
-        }
-
-        function toggleCRT() {
-            const crt = document.getElementById('crtOverlay');
-            if (crt.style.opacity === '0') {
-                crt.style.opacity = '1';
-                showToast("CRT Filter Enabled");
-            } else {
-                crt.style.opacity = '0';
-                showToast("CRT Filter Disabled");
-            }
-            playAudio('blip');
-        }
-
-        /* Canvas Mini Game Engine */
+        /* Canvas Maze Engine */
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const GRID_SIZE = 15;
@@ -538,42 +533,39 @@
 
         const mazeMapTemplate = [
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-            [1,2,0,0,0,0,1,0,0,0,0,0,2,0,1],
-            [1,0,1,1,0,0,1,0,0,1,1,1,0,0,1],
+            [1,0,0,0,1,0,0,0,0,0,0,0,0,2,1],
+            [1,0,1,0,1,0,1,1,1,1,1,1,0,1,1],
             [1,0,1,0,0,0,0,0,0,0,0,1,0,0,1],
-            [1,0,0,0,1,1,9,1,1,0,0,0,0,0,1],
-            [1,0,1,0,1,9,9,9,1,0,1,1,0,0,1],
-            [1,0,1,0,9,9,9,9,9,0,1,0,0,0,1],
-            [1,0,0,0,1,9,9,9,1,0,0,0,1,0,1],
-            [1,0,1,0,1,1,1,1,1,0,1,0,1,0,1],
-            [1,0,1,0,0,0,0,0,0,0,1,0,0,0,1],
-            [1,0,1,1,1,0,1,0,1,1,1,0,1,0,1],
-            [1,0,0,0,0,0,1,0,0,0,0,0,1,0,1],
-            [1,0,1,1,0,1,1,1,0,1,1,0,1,0,1],
-            [1,2,0,0,0,0,0,0,0,0,0,0,0,2,1],
+            [1,0,1,1,1,1,0,1,1,1,0,1,1,0,1],
+            [1,0,0,0,0,1,0,0,0,1,0,0,0,0,1],
+            [1,1,1,1,0,1,1,1,0,1,1,1,1,0,1],
+            [1,0,0,0,0,0,0,1,0,0,0,0,0,0,1],
+            [1,0,1,1,1,1,0,1,1,1,1,1,1,0,1],
+            [1,0,0,0,0,1,0,0,0,0,0,0,1,0,1],
+            [1,1,1,1,0,1,1,1,1,1,1,0,1,0,1],
+            [1,0,0,0,0,0,0,0,0,0,1,0,0,0,1],
+            [1,0,1,1,1,1,1,1,1,0,1,1,1,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
         ];
 
         let maze = [];
-        let score = 0;
         let lives = 3;
         let gameRunning = false;
         let animFrameId = null;
 
-        let player = { x: 1, y: 1, dirX: 0, dirY: 0, nextDirX: 0, nextDirY: 0, color: '#ffe600' };
-        let redGhost = { x: 7, y: 6, color: '#ff0055' };
-        let blueGhost = { x: 7, y: 7, color: '#00f0ff' };
+        let player = { x: 1, y: 13, color: '#00f0ff' };
+        let hazard = { x: 7, y: 7, color: '#ff0055', dir: 1 };
 
         function resetMazeData() {
             maze = JSON.parse(JSON.stringify(mazeMapTemplate));
-            player.x = 1; player.y = 1; player.dirX = 0; player.dirY = 0; player.nextDirX = 0; player.nextDirY = 0;
-            redGhost.x = 7; redGhost.y = 5;
-            blueGhost.x = 7; blueGhost.y = 7;
+            player.x = 1; player.y = 13;
+            hazard.x = 7; hazard.y = 7;
         }
 
         function startGame() {
             document.getElementById('canvasOverlay').classList.add('hidden');
-            score = 0; lives = 3; updateHUD(); resetMazeData();
+            lives = 3; updateHUD(); resetMazeData();
             gameRunning = true; focusCanvas(); playAudio('coin');
             if (animFrameId) cancelAnimationFrame(animFrameId);
             lastTime = performance.now();
@@ -581,7 +573,7 @@
         }
 
         function resetGame() {
-            score = 0; lives = 3; updateHUD(); resetMazeData(); gameRunning = true;
+            lives = 3; updateHUD(); resetMazeData(); gameRunning = true;
             document.getElementById('canvasOverlay').classList.add('hidden');
             focusCanvas(); playAudio('coin');
         }
@@ -589,11 +581,9 @@
         function focusCanvas() { canvas.focus(); }
 
         function updateHUD() {
-            document.getElementById('gameScoreDisplay').innerText = score.toString().padStart(5, '0');
-            document.getElementById('modalScoreDisplay').innerText = score.toString().padStart(5, '0');
             let livesStr = '';
-            for(let i = 0; i < lives; i++) livesStr += '█ ';
-            document.getElementById('gameLivesDisplay').innerText = livesStr || 'GAMEOVER';
+            for(let i = 0; i < lives; i++) livesStr += '♥';
+            document.getElementById('gameLivesDisplay').innerText = livesStr || 'DEAD';
         }
 
         let lastTime = 0;
@@ -620,52 +610,20 @@
         }
 
         function updateGameLogic() {
-            if (player.nextDirX !== 0 || player.nextDirY !== 0) {
-                if (!isWall(player.x + player.nextDirX, player.y + player.nextDirY)) {
-                    player.dirX = player.nextDirX;
-                    player.dirY = player.nextDirY;
-                }
+            hazard.x += hazard.dir;
+            if (isWall(hazard.x, hazard.y)) {
+                hazard.dir *= -1;
+                hazard.x += hazard.dir;
             }
 
-            if (!isWall(player.x + player.dirX, player.y + player.dirY)) {
-                player.x += player.dirX;
-                player.y += player.dirY;
-
-                const currentTile = maze[player.y][player.x];
-                if (currentTile === 0) {
-                    maze[player.y][player.x] = 9; score += 10; playAudio('eat'); updateHUD();
-                } else if (currentTile === 2) {
-                    maze[player.y][player.x] = 9; score += 50; playAudio('coin'); updateHUD();
-                }
-            }
-
-            moveRedGhost();
-            moveBlueGhost();
-
-            if ((player.x === redGhost.x && player.y === redGhost.y) || 
-                (player.x === blueGhost.x && player.y === blueGhost.y)) {
+            if (player.x === hazard.x && player.y === hazard.y) {
                 handlePlayerDeath();
             }
-        }
 
-        function moveRedGhost() {
-            const dirs = [{x: 0, y: -1}, {x: 0, y: 1}, {x: -1, y: 0}, {x: 1, y: 0}];
-            let bestDir = null; let minDist = Infinity;
-            dirs.forEach(d => {
-                const nx = redGhost.x + d.x, ny = redGhost.y + d.y;
-                if (!isWall(nx, ny)) {
-                    const dist = Math.hypot(nx - player.x, ny - player.y);
-                    if (dist < minDist) { minDist = dist; bestDir = d; }
-                }
-            });
-            if (bestDir) { redGhost.x += bestDir.x; redGhost.y += bestDir.y; }
-        }
-
-        function moveBlueGhost() {
-            const dirs = [{x: 0, y: -1}, {x: 0, y: 1}, {x: -1, y: 0}, {x: 1, y: 0}].filter(d => !isWall(blueGhost.x + d.x, blueGhost.y + d.y));
-            if (dirs.length > 0) {
-                const randomDir = dirs[Math.floor(Math.random() * dirs.length)];
-                blueGhost.x += randomDir.x; blueGhost.y += randomDir.y;
+            if (maze[player.y][player.x] === 2) {
+                playAudio('coin');
+                alert("STAGE CLEARED! You found the exit portal.");
+                resetMazeData();
             }
         }
 
@@ -674,10 +632,8 @@
             if (lives <= 0) {
                 gameRunning = false;
                 document.getElementById('canvasOverlay').classList.remove('hidden');
-                openSubmitModal();
             } else {
-                player.x = 1; player.y = 1; player.dirX = 0; player.dirY = 0;
-                redGhost.x = 7; redGhost.y = 5; blueGhost.x = 7; blueGhost.y = 7;
+                player.x = 1; player.y = 13;
             }
         }
 
@@ -689,38 +645,84 @@
                     if (tile === 1) {
                         ctx.fillStyle = '#1f2041'; ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
                         ctx.strokeStyle = '#00f0ff'; ctx.lineWidth = 1; ctx.strokeRect(x + 2, y + 2, TILE_SIZE - 4, TILE_SIZE - 4);
-                    } else if (tile === 0) {
-                        ctx.fillStyle = '#ffe600'; ctx.fillRect(x + TILE_SIZE / 2 - 2, y + TILE_SIZE / 2 - 2, 4, 4);
                     } else if (tile === 2) {
-                        ctx.fillStyle = '#ffe600'; ctx.beginPath(); ctx.arc(x + TILE_SIZE / 2, y + TILE_SIZE / 2, 6, 0, Math.PI * 2); ctx.fill();
+                        ctx.fillStyle = '#ffe600'; ctx.fillRect(x + 4, y + 4, TILE_SIZE - 8, TILE_SIZE - 8);
                     }
                 }
             }
             ctx.fillStyle = player.color; ctx.fillRect(player.x * TILE_SIZE + 3, player.y * TILE_SIZE + 3, TILE_SIZE - 6, TILE_SIZE - 6);
-            ctx.fillStyle = redGhost.color; ctx.fillRect(redGhost.x * TILE_SIZE + 3, redGhost.y * TILE_SIZE + 3, TILE_SIZE - 6, TILE_SIZE - 6);
-            ctx.fillStyle = blueGhost.color; ctx.fillRect(blueGhost.x * TILE_SIZE + 3, blueGhost.y * TILE_SIZE + 3, TILE_SIZE - 6, TILE_SIZE - 6);
+            ctx.fillStyle = hazard.color; ctx.fillRect(hazard.x * TILE_SIZE + 3, hazard.y * TILE_SIZE + 3, TILE_SIZE - 6, TILE_SIZE - 6);
         }
 
         window.addEventListener('keydown', (e) => {
+            if (!gameRunning) return;
             const key = e.key.toLowerCase();
-            if (['arrowup', 'w'].includes(key)) { player.nextDirX = 0; player.nextDirY = -1; e.preventDefault(); }
-            else if (['arrowdown', 's'].includes(key)) { player.nextDirX = 0; player.nextDirY = 1; e.preventDefault(); }
-            else if (['arrowleft', 'a'].includes(key)) { player.nextDirX = -1; player.nextDirY = 0; e.preventDefault(); }
-            else if (['arrowright', 'd'].includes(key)) { player.nextDirX = 1; player.nextDirY = 0; e.preventDefault(); }
+            let nx = player.x, ny = player.y;
+
+            if (['arrowup', 'w'].includes(key)) { ny--; e.preventDefault(); }
+            else if (['arrowdown', 's'].includes(key)) { ny++; e.preventDefault(); }
+            else if (['arrowleft', 'a'].includes(key)) { nx--; e.preventDefault(); }
+            else if (['arrowright', 'd'].includes(key)) { nx++; e.preventDefault(); }
+
+            if (!isWall(nx, ny)) {
+                player.x = nx;
+                player.y = ny;
+            }
         });
 
-        function openSubmitModal() { document.getElementById('submitModal').classList.remove('hidden'); }
-        function closeSubmitModal() { document.getElementById('submitModal').classList.add('hidden'); }
-        function confirmScoreSubmission() { showToast("HIGH SCORE SUBMITTED!"); closeSubmitModal(); playAudio('coin'); }
+        /* Media Gallery & Lightbox Logic */
+        function filterMedia(category) {
+            playAudio('blip');
+            const items = document.querySelectorAll('.media-item');
+            
+            const btnAll = document.getElementById('btn-filter-all');
+            const btnVideo = document.getElementById('btn-filter-video');
+            const btnShot = document.getElementById('btn-filter-screenshot');
+
+            [btnAll, btnVideo, btnShot].forEach(b => {
+                b.className = "px-4 py-2.5 bg-pixel-black text-gray-300 border-2 border-pixel-wall hover:border-pixel-blue hover:text-pixel-blue transition-colors";
+            });
+
+            if (category === 'all') {
+                btnAll.className = "px-4 py-2.5 bg-pixel-yellow text-black border-2 border-black font-arcade shadow-[2px_2px_0px_#000]";
+            } else if (category === 'video') {
+                btnVideo.className = "px-4 py-2.5 bg-pixel-red text-white border-2 border-black font-arcade shadow-[2px_2px_0px_#000]";
+            } else if (category === 'screenshot') {
+                btnShot.className = "px-4 py-2.5 bg-pixel-green text-black border-2 border-black font-arcade shadow-[2px_2px_0px_#000]";
+            }
+
+            items.forEach(item => {
+                if (category === 'all' || item.classList.contains(category)) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        }
+
+        function openMediaLightbox(type, title, desc, url) {
+            playAudio('blip');
+            document.getElementById('lightboxTitle').innerText = title;
+            document.getElementById('lightboxDesc').innerText = desc;
+            const container = document.getElementById('lightboxContent');
+            container.innerHTML = '';
+
+            if (type === 'video') {
+                container.innerHTML = `<iframe src="${url}?autoplay=1" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            } else {
+                container.innerHTML = `<img src="${url}" alt="${title}" class="w-full h-full object-contain">`;
+            }
+
+            document.getElementById('mediaLightboxModal').classList.remove('hidden');
+        }
+
+        function closeMediaLightbox() {
+            document.getElementById('mediaLightboxModal').classList.add('hidden');
+            document.getElementById('lightboxContent').innerHTML = '';
+        }
+
         function openTrailerModal() { document.getElementById('trailerModal').classList.remove('hidden'); playAudio('blip'); }
         function closeTrailerModal() { document.getElementById('trailerModal').classList.add('hidden'); }
-
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toastMsg').innerText = message;
-            toast.classList.remove('translate-y-24', 'opacity-0');
-            setTimeout(() => { toast.classList.add('translate-y-24', 'opacity-0'); }, 3000);
-        }
 
         window.onload = function() {
             resetMazeData(); renderGame();
