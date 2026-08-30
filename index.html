@@ -4,7 +4,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boddy - Retro Arcade Maze Escape</title>
+    
+    <!-- Basic SEO Meta Tags -->
+    <title>Boddy - Retro Arcade Maze Escape Game</title>
+    <meta name="description" content="Guide Boddy through intense arcade mazes, dodge deadly traps, evade hazards, and outrun titan boss monsters in this fast-paced retro maze escape game.">
+    <meta name="keywords" content="Boddy, arcade game, retro maze game, maze escape, mobile game, boss pursuit, pixel art game, Android maze game, iOS arcade game">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="BStudio">
+    <link rel="canonical" href="https://boddygame.com/">
+
+    <!-- Open Graph / Facebook / WhatsApp Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Boddy - Retro Arcade Maze Escape">
+    <meta property="og:description" content="Navigate, dodge, and survive! Guide Boddy through labyrinthine corridors and outrun colossal Boss Monsters.">
+    <meta property="og:image" content="https://boddygame.com/screen1.png">
+    <meta property="og:url" content="https://boddygame.com/">
+    <meta property="og:site_name" content="Boddy Arcade">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Boddy - Retro Arcade Maze Escape">
+    <meta name="twitter:description" content="Guide Boddy through dynamic mazes, evade traps, and defeat titan bosses in this fast-paced arcade runner.">
+    <meta name="twitter:image" content="https://boddygame.com/screen1.png">
+
+    <!-- Structured Data (Schema.org JSON-LD for Video Games) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Boddy",
+      "operatingSystem": "Android, iOS",
+      "applicationCategory": "GameApplication",
+      "gameGenre": "Arcade / Action / Maze",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "BStudio"
+      },
+      "description": "A fast-paced retro arcade maze escape game featuring dynamic layouts, trap dodging, and intense boss pursuit encounters."
+    }
+    </script>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts for Arcade Aesthetics -->
@@ -179,7 +223,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <a href="#" onclick="showPage('home'); playAudio('blip');" class="flex items-center space-x-3 group">
                 <div class="w-10 h-10  flex items-center justify-center ">
-                    <img src="./boddy.png" />
+                    <img src="./boddy.png" alt="Boddy Icon" />
                 </div>
                 <div class="flex flex-col">
                     <span class="font-arcade text-lg sm:text-xl text-pixel-yellow tracking-wider">BODDY</span>
@@ -266,12 +310,11 @@
                         </div>
                     </div>
 
-                    <!-- Infinite Auto-Sliding Screenshot Slider (Replaces Demo Canvas) -->
+                    <!-- Infinite Auto-Sliding Screenshot Slider -->
                     <div class="lg:col-span-6 flex justify-center">
                         <div
                             class="relative w-full max-w-lg bg-pixel-dark border-4 border-pixel-yellow p-4 sm:p-6 shadow-[0_0_30px_rgba(255,230,0,0.2)]">
                             
-
                             <!-- Slider Container -->
                             <div class="relative aspect-video w-full bg-pixel-black border-2 border-pixel-white overflow-hidden group">
                                 <div id="heroSliderTrack" class="slider-track w-full h-full">
@@ -304,21 +347,21 @@
                                 </div>
 
                                 <!-- Manual Navigation Overlay Controls -->
-                                <button onclick="prevHeroSlide()" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-pixel-black/80 border border-pixel-yellow text-pixel-yellow flex items-center justify-center hover:bg-pixel-yellow hover:text-black transition-colors">
+                                <button onclick="prevHeroSlide()" aria-label="Previous Slide" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-pixel-black/80 border border-pixel-yellow text-pixel-yellow flex items-center justify-center hover:bg-pixel-yellow hover:text-black transition-colors">
                                     <i class="fas fa-chevron-left text-xs"></i>
                                 </button>
-                                <button onclick="nextHeroSlide()" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-pixel-black/80 border border-pixel-yellow text-pixel-yellow flex items-center justify-center hover:bg-pixel-yellow hover:text-black transition-colors">
+                                <button onclick="nextHeroSlide()" aria-label="Next Slide" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-pixel-black/80 border border-pixel-yellow text-pixel-yellow flex items-center justify-center hover:bg-pixel-yellow hover:text-black transition-colors">
                                     <i class="fas fa-chevron-right text-xs"></i>
                                 </button>
                             </div>
 
                             <!-- Indicator Dots -->
                             <div class="mt-4 pt-3 border-t-2 border-pixel-wall flex items-center justify-center space-x-3" id="heroSliderDots">
-                                <button onclick="goToHeroSlide(0)" class="w-3 h-3 bg-pixel-yellow transition-all border border-black"></button>
-                                <button onclick="goToHeroSlide(1)" class="w-3 h-3 bg-pixel-wall transition-all border border-black"></button>
-                                <button onclick="goToHeroSlide(2)" class="w-3 h-3 bg-pixel-wall transition-all border border-black"></button>
-                                <button onclick="goToHeroSlide(3)" class="w-3 h-3 bg-pixel-wall transition-all border border-black"></button>
-                                <button onclick="goToHeroSlide(4)" class="w-3 h-3 bg-pixel-wall transition-all border border-black"></button>
+                                <button onclick="goToHeroSlide(0)" aria-label="Slide 1" class="w-3 h-3 bg-pixel-yellow transition-all border border-black"></button>
+                                <button onclick="goToHeroSlide(1)" aria-label="Slide 2" class="w-3 h-3 bg-pixel-wall transition-all border border-black"></button>
+                                <button onclick="goToHeroSlide(2)" aria-label="Slide 3" class="w-3 h-3 bg-pixel-wall transition-all border border-black"></button>
+                                <button onclick="goToHeroSlide(3)" aria-label="Slide 4" class="w-3 h-3 bg-pixel-wall transition-all border border-black"></button>
+                                <button onclick="goToHeroSlide(4)" aria-label="Slide 5" class="w-3 h-3 bg-pixel-wall transition-all border border-black"></button>
                             </div>
                         </div>
                     </div>
@@ -363,7 +406,6 @@
                 </div>
             </div>
         </section>
-
 
         <section id="action" class="relative py-36 sm:py-48 border-y-4 border-pixel-yellow overflow-hidden bg-pixel-black">
             <!-- Background GIF with Overlay -->
@@ -762,7 +804,7 @@
 
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10  flex items-center justify-center ">
-                    <img src="./boddy.png" />
+                    <img src="./boddy.png" alt="Boddy Logo" />
                 </div>
                 <span class="font-arcade text-sm text-pixel-yellow">Boddy ARCADE</span>
             </div>
@@ -775,13 +817,13 @@
             </div>
 
             <div class="flex space-x-4 text-xl text-gray-400">
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube"
                     class="hover:text-pixel-red transition-colors"><i class="fab fa-youtube"></i></a>
-                <a href="https://reddit.com" target="_blank" rel="noopener noreferrer"
+                <a href="https://reddit.com" target="_blank" rel="noopener noreferrer" aria-label="Reddit"
                     class="hover:text-pixel-yellow transition-colors"><i class="fab fa-reddit-alien"></i></a>
-                <a href="https://x.com" target="_blank" rel="noopener noreferrer"
+                <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter"
                     class="hover:text-pixel-blue transition-colors"><i class="fab fa-twitter"></i></a>
-                <a href="https://discord.com" target="_blank" rel="noopener noreferrer"
+                <a href="https://discord.com" target="_blank" rel="noopener noreferrer" aria-label="Discord"
                     class="hover:text-pixel-green transition-colors"><i class="fab fa-discord"></i></a>
             </div>
 
