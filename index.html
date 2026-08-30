@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,9 @@
     <!-- Google Fonts for Arcade Aesthetics -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&family=Inter:wght@400;600;800&display=swap"
+        rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -21,7 +24,7 @@
                         pixel: {
                             black: '#050508',
                             dark: '#0e0e17',
-                            blue: '#00f0ff',
+                            blue: '#354dff',
                             red: '#ff0055',
                             yellow: '#ffe600',
                             wall: '#1f2041',
@@ -60,15 +63,11 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(
-                rgba(18, 16, 16, 0) 50%, 
-                rgba(0, 0, 0, 0.25) 50%
-            ), linear-gradient(
-                90deg,
-                rgba(255, 0, 0, 0.03),
-                rgba(0, 255, 0, 0.01),
-                rgba(0, 0, 255, 0.03)
-            );
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%,
+                    rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg,
+                    rgba(255, 0, 0, 0.03),
+                    rgba(0, 255, 0, 0.01),
+                    rgba(0, 0, 255, 0.03));
             background-size: 100% 3px, 6px 100%;
             pointer-events: none;
             z-index: 99;
@@ -82,15 +81,24 @@
             transition: all 0.1s ease;
             box-shadow: 4px 4px 0px #000;
         }
+
         .btn-retro:active {
             transform: translate(2px, 2px);
             box-shadow: 2px 2px 0px #000;
         }
 
         @keyframes textGlow {
-            0%, 100% { text-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055; }
-            50% { text-shadow: 0 0 15px #ffe600, 0 0 25px #ffe600; }
+
+            0%,
+            100% {
+                text-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055;
+            }
+
+            50% {
+                text-shadow: 0 0 15px #ffe600, 0 0 25px #ffe600;
+            }
         }
+
         .glow-title {
             animation: textGlow 3s infinite alternate;
         }
@@ -98,12 +106,15 @@
         ::-webkit-scrollbar {
             width: 10px;
         }
+
         ::-webkit-scrollbar-track {
             background: #050508;
         }
+
         ::-webkit-scrollbar-thumb {
             background: #ff0055;
         }
+
         ::-webkit-scrollbar-thumb:hover {
             background: #ffe600;
         }
@@ -111,11 +122,28 @@
         .media-card {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+
         .media-card:hover {
             transform: translateY(-4px);
         }
+
+        .gameplay-gif-bg {
+            position: relative;
+            background-image: url('./gameplay.mp4');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Gameplay GIF Background Styling */
+        .gameplay-gif-bg video {
+            position: absolute;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
+
 <body class="font-sans antialiased selection:bg-pixel-yellow selection:text-black">
 
     <div id="crtOverlay" class="crt-overlay"></div>
@@ -123,26 +151,38 @@
     <!-- Navigation Bar -->
     <header class="sticky top-0 z-50 bg-pixel-black/90 backdrop-blur-md border-b-2 border-pixel-wall">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            
+
             <a href="#" onclick="showPage('home'); playAudio('blip');" class="flex items-center space-x-3 group">
-                <div class="w-10 h-10 bg-pixel-red flex items-center justify-center border-2 border-black shadow-[2px_2px_0px_#ffe600] group-hover:rotate-6 transition-transform">
-                    <div class="w-4 h-4 bg-black"></div>
+                <div class="w-10 h-10  flex items-center justify-center ">
+                    <img src="./boddy.png" />
                 </div>
                 <div class="flex flex-col">
                     <span class="font-arcade text-lg sm:text-xl text-pixel-yellow tracking-wider">BODDY</span>
-                    <span class="font-vt text-xs text-pixel-red tracking-widest uppercase">NAVIGATE. DODGE. SURVIVE.</span>
+                    <span class="font-vt text-xs text-pixel-red tracking-widest uppercase">NAVIGATE. DODGE.
+                        SURVIVE.</span>
                 </div>
             </a>
 
             <nav class="hidden md:flex items-center space-x-8 font-retro text-sm uppercase">
-                <a href="#demo" onclick="showPage('home')" class="text-gray-300 hover:text-pixel-yellow transition-colors hover:underline underline-offset-8 decoration-pixel-yellow">Demo</a>
-                <a href="#features" onclick="showPage('home')" class="text-gray-300 hover:text-pixel-blue transition-colors hover:underline underline-offset-8 decoration-pixel-blue">Mechanics</a>
-                <a href="#media" onclick="showPage('home')" class="text-gray-300 hover:text-pixel-green transition-colors hover:underline underline-offset-8 decoration-pixel-green">Videos & Shots</a>
-                <a href="#privacy" onclick="showPage('privacy')" class="text-pixel-blue hover:text-pixel-yellow transition-colors hover:underline underline-offset-8 decoration-pixel-yellow">Privacy Policy</a>
+                <a href="#demo" onclick="showPage('home')"
+                    class="text-gray-300 hover:text-pixel-yellow transition-colors hover:underline underline-offset-8 decoration-pixel-yellow">Demo</a>
+                <a href="#download" onclick="showPage('home')"
+                    class="text-pixel-green hover:text-pixel-yellow transition-colors hover:underline underline-offset-8 decoration-pixel-yellow">Download</a>
+                <a href="#features" onclick="showPage('home')"
+                    class="text-gray-300 hover:text-pixel-blue transition-colors hover:underline underline-offset-8 decoration-pixel-blue">Mechanics</a>
+                <a href="#media" onclick="showPage('home')"
+                    class="text-gray-300 hover:text-pixel-green transition-colors hover:underline underline-offset-8 decoration-pixel-green">Videos
+                    & Shots</a>
+                <a href="#socials" onclick="showPage('home')"
+                    class="text-gray-300 hover:text-pixel-red transition-colors hover:underline underline-offset-8 decoration-pixel-red">Community</a>
+                <a href="#privacy" onclick="showPage('privacy')"
+                    class="text-pixel-blue hover:text-pixel-yellow transition-colors hover:underline underline-offset-8 decoration-pixel-yellow">Privacy
+                    Policy</a>
             </nav>
 
             <div class="flex items-center space-x-3 sm:space-x-4">
-                <a href="#demo" onclick="showPage('home'); playAudio('coin'); focusCanvas();" class="btn-retro font-arcade text-xs px-4 py-2.5 bg-pixel-yellow text-black border-2 border-black hover:bg-white transition-all shadow-[3px_3px_0px_#ff0055]">
+                <a href="#demo" onclick="showPage('home'); playAudio('coin'); focusCanvas();"
+                    class="btn-retro font-arcade text-xs px-4 py-2.5 bg-pixel-yellow text-black border-2 border-black hover:bg-white transition-all shadow-[3px_3px_0px_#ff0055]">
                     RUN MAZE
                 </a>
             </div>
@@ -152,12 +192,16 @@
     <!-- Main View Container -->
     <div id="homeView">
         <!-- Hero Section -->
-        <section class="relative pt-10 pb-20 overflow-hidden bg-gradient-to-b from-pixel-black via-pixel-dark to-pixel-black border-b border-pixel-wall">
-            <div class="absolute inset-0 bg-[linear-gradient(to_right,#1f2041_1px,transparent_1px),linear-gradient(to_bottom,#1f2041_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30"></div>
+        <section
+            class="relative pt-10 pb-20 overflow-hidden bg-gradient-to-b from-pixel-black via-pixel-dark to-pixel-black border-b border-pixel-wall">
+            <div
+                class="absolute inset-0 bg-[linear-gradient(to_right,#1f2041_1px,transparent_1px),linear-gradient(to_bottom,#1f2041_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30">
+            </div>
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                     <div class="lg:col-span-6 space-y-6 text-center lg:text-left">
-                        <div class="inline-flex items-center space-x-2 px-3 py-1.5 bg-pixel-dark border border-pixel-red/50 text-pixel-red font-retro text-xs tracking-wider uppercase shadow-[2px_2px_0px_#ffe600]">
+                        <div
+                            class="inline-flex items-center space-x-2 px-3 py-1.5 bg-pixel-dark border border-pixel-red/50 text-pixel-red font-retro text-xs tracking-wider uppercase shadow-[2px_2px_0px_#ffe600]">
                             <span class="w-2 h-2 bg-pixel-yellow animate-ping rounded-full"></span>
                             <span>RETRO MAZE ESCAPE ACTION</span>
                         </div>
@@ -165,9 +209,12 @@
                             FIND THE <span class="text-pixel-yellow glow-title">PATH</span>. ESCAPE THE MAZE.
                         </h1>
                         <p class="font-vt text-xl sm:text-2xl text-gray-300 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                            Guide <span class="text-pixel-yellow">Boddy</span> through labyrinthine corridors. Dodge deadly traps, evade patrolling hazards, and outrun colossal <span class="text-pixel-red">Boss Monsters</span> to reach the exit gate!
+                            Guide <span class="text-pixel-yellow">Boddy</span> through labyrinthine corridors. Dodge
+                            deadly traps, evade patrolling hazards, and outrun colossal <span
+                                class="text-pixel-red">Boss Monsters</span> to reach the exit gate!
                         </p>
-                        <div class="grid grid-cols-3 gap-3 py-4 max-w-md mx-auto lg:mx-0 border-y border-pixel-wall font-retro text-center">
+                        <div
+                            class="grid grid-cols-3 gap-3 py-4 max-w-md mx-auto lg:mx-0 border-y border-pixel-wall font-retro text-center">
                             <div class="p-2 bg-pixel-dark border border-pixel-wall">
                                 <p class="font-arcade text-pixel-yellow text-sm sm:text-base">DYNAMIC</p>
                                 <p class="text-[10px] text-gray-400 mt-1">MAZE LAYOUTS</p>
@@ -181,21 +228,26 @@
                                 <p class="text-[10px] text-gray-400 mt-1">ARCADE STYLES</p>
                             </div>
                         </div>
-                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-4 pt-2">
-                            <a href="#demo" onclick="playAudio('coin'); focusCanvas();" class="w-full sm:w-auto btn-retro font-arcade text-sm px-8 py-4 bg-pixel-yellow text-black border-2 border-black hover:bg-white transition-all text-center flex items-center justify-center space-x-3 shadow-pixel-yellow">
+                        <div
+                            class="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-4 pt-2">
+                            <a href="#demo" onclick="playAudio('coin'); focusCanvas();"
+                                class="w-full sm:w-auto btn-retro font-arcade text-sm px-8 py-4 bg-pixel-yellow text-black border-2 border-black hover:bg-white transition-all text-center flex items-center justify-center space-x-3 shadow-pixel-yellow">
                                 <i class="fas fa-play"></i>
-                                <span>PLAY MAZE DEMO</span>
+                                <span>PLAY Boddy </span>
                             </a>
-                            <button onclick="openTrailerModal()" class="w-full sm:w-auto btn-retro font-retro text-sm px-6 py-4 bg-pixel-dark text-gray-200 border-2 border-pixel-blue hover:text-pixel-blue hover:border-pixel-yellow transition-all flex items-center justify-center space-x-2">
+                            <button onclick="openTrailerModal()"
+                                class="w-full sm:w-auto btn-retro font-retro text-sm px-6 py-4 bg-pixel-dark text-gray-200 border-2 border-pixel-blue hover:text-pixel-blue hover:border-pixel-yellow transition-all flex items-center justify-center space-x-2">
                                 <i class="fas fa-film text-pixel-red"></i>
                                 <span>PREVIEW GAMEPLAY</span>
                             </button>
                         </div>
                     </div>
-                    
+
                     <div class="lg:col-span-6 flex justify-center" id="demo">
-                        <div class="relative w-full max-w-lg bg-pixel-dark border-4 border-pixel-yellow p-4 sm:p-6 shadow-[0_0_30px_rgba(255,230,0,0.2)]">
-                            <div class="flex items-center justify-between bg-pixel-black p-3 border-2 border-pixel-wall mb-4 font-arcade text-xs">
+                        <div
+                            class="relative w-full max-w-lg bg-pixel-dark border-4 border-pixel-yellow p-4 sm:p-6 shadow-[0_0_30px_rgba(255,230,0,0.2)]">
+                            <div
+                                class="flex items-center justify-between bg-pixel-black p-3 border-2 border-pixel-wall mb-4 font-arcade text-xs">
                                 <div class="flex items-center space-x-2 text-pixel-yellow">
                                     <span class="w-3 h-3 bg-pixel-yellow animate-pulse"></span>
                                     <span>STAGE: <span id="gameStageDisplay" class="text-white">LVL 01</span></span>
@@ -205,26 +257,37 @@
                                     <span id="gameLivesDisplay" class="tracking-widest text-pixel-yellow">♥♥♥</span>
                                 </div>
                             </div>
-                            <div class="relative aspect-square w-full bg-pixel-black border-2 border-pixel-yellow flex items-center justify-center overflow-hidden group">
-                                <canvas id="gameCanvas" width="400" height="400" class="w-full h-full cursor-pointer focus:outline-none" tabindex="0"></canvas>
-                                <div id="canvasOverlay" class="absolute inset-0 bg-pixel-black/85 flex flex-col items-center justify-center p-6 text-center space-y-4">
-                                    <div class="w-16 h-16 bg-pixel-yellow border-2 border-black flex items-center justify-center text-black text-2xl font-arcade animate-bounce shadow-pixel-yellow">
-                                        <i class="fas fa-compass"></i>
+                            <div
+                                class="relative aspect-square w-full bg-pixel-black border-2 border-pixel-yellow flex items-center justify-center overflow-hidden group">
+                                <canvas id="gameCanvas" width="400" height="400"
+                                    class="w-full h-full cursor-pointer focus:outline-none" tabindex="0"></canvas>
+                                <div id="canvasOverlay"
+                                    class="absolute inset-0 bg-pixel-black/85 flex flex-col items-center justify-center p-6 text-center space-y-4">
+                                    <div class="w-10 h-10  flex items-center justify-center font-arcade animate-bounce">
+                                        <img src="./boddy.png" />
                                     </div>
+
                                     <h3 class="font-arcade text-lg text-pixel-yellow">BODDY MAZE DEMO</h3>
-                                    <p class="font-vt text-lg text-gray-300">Use WASD or Arrow Keys to dodge red hazards and reach the yellow exit portal!</p>
-                                    <button onclick="startGame()" class="btn-retro font-arcade text-xs px-6 py-3 bg-pixel-red text-white border-2 border-black hover:bg-pixel-yellow hover:text-black transition-colors">
+                                    <p class="font-vt text-lg text-gray-300">Use WASD or Arrow Keys to dodge red hazards
+                                        and reach the yellow exit portal!</p>
+                                    <button onclick="startGame()"
+                                        class="btn-retro font-arcade text-xs px-6 py-3 bg-pixel-red text-white border-2 border-black hover:bg-pixel-yellow hover:text-black transition-colors">
                                         START ESCAPE
                                     </button>
                                 </div>
                             </div>
-                            <div class="mt-4 pt-4 border-t-2 border-pixel-wall flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <div
+                                class="mt-4 pt-4 border-t-2 border-pixel-wall flex flex-col sm:flex-row items-center justify-between gap-3">
                                 <div class="flex items-center space-x-2 font-vt text-sm text-gray-400">
-                                    <span class="w-2.5 h-2.5 bg-pixel-blue rounded-full inline-block"></span> <span>Boddy</span>
-                                    <span class="w-2.5 h-2.5 bg-pixel-red rounded-full inline-block"></span> <span>Hazards</span>
-                                    <span class="w-2.5 h-2.5 bg-pixel-yellow rounded-full inline-block"></span> <span>Exit Gate</span>
+                                    <span class="w-2.5 h-2.5 bg-pixel-blue rounded-full inline-block"></span>
+                                    <span>Boddy</span>
+                                    <span class="w-2.5 h-2.5 bg-pixel-red rounded-full inline-block"></span>
+                                    <span>Hazards</span>
+                                    <span class="w-2.5 h-2.5 bg-pixel-yellow rounded-full inline-block"></span>
+                                    <span>Exit Gate</span>
                                 </div>
-                                <button onclick="resetGame()" class="font-retro text-xs text-pixel-yellow hover:underline flex items-center space-x-1">
+                                <button onclick="resetGame()"
+                                    class="font-retro text-xs text-pixel-yellow hover:underline flex items-center space-x-1">
                                     <i class="fas fa-redo"></i>
                                     <span>RESET LEVEL</span>
                                 </button>
@@ -239,49 +302,167 @@
         <section id="features" class="py-20 bg-pixel-black border-b border-pixel-wall relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center space-y-4 mb-16">
-                    <span class="font-retro text-xs text-pixel-blue tracking-widest uppercase px-3 py-1 bg-pixel-dark border border-pixel-blue">GAMEPLAY ELEMENTS</span>
+                    <span
+                        class="font-retro text-xs text-pixel-blue tracking-widest uppercase px-3 py-1 bg-pixel-dark border border-pixel-blue">GAMEPLAY
+                        ELEMENTS</span>
                     <h2 class="font-arcade text-2xl sm:text-3xl text-white">MAZE SURVIVAL MECHANICS</h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-pixel-dark p-8 border-2 border-pixel-blue shadow-[4px_4px_0px_#00f0ff]">
-                        <div class="w-14 h-14 bg-pixel-blue flex items-center justify-center text-black font-arcade text-2xl mb-6"><i class="fas fa-route"></i></div>
+                    <div class="bg-pixel-dark p-8 border-2 border-pixel-blue shadow-[4px_4px_0px_#354dff]">
+                        <div
+                            class="w-14 h-14 bg-pixel-blue flex items-center justify-center text-black font-arcade text-2xl mb-6">
+                            <i class="fas fa-route"></i></div>
                         <h3 class="font-arcade text-xl text-white mb-4">PATH NAVIGATION</h3>
-                        <p class="font-vt text-lg text-gray-300">Explore complex labyrinthine structures and locate the single correct pathway leading to the level's exit portal.</p>
+                        <p class="font-vt text-lg text-gray-300">Explore complex labyrinthine structures and locate the
+                            single correct pathway leading to the level's exit portal.</p>
                     </div>
                     <div class="bg-pixel-dark p-8 border-2 border-pixel-red shadow-[4px_4px_0px_#ff0055]">
-                        <div class="w-14 h-14 bg-pixel-red flex items-center justify-center text-white font-arcade text-2xl mb-6"><i class="fas fa-skull"></i></div>
+                        <div
+                            class="w-14 h-14 bg-pixel-red flex items-center justify-center text-white font-arcade text-2xl mb-6">
+                            <i class="fas fa-skull"></i></div>
                         <h3 class="font-arcade text-xl text-white mb-4">BOSS PURSUITS</h3>
-                        <p class="font-vt text-lg text-gray-300">Survive high-stakes boss encounters where deadly titan hazards actively chase you through narrow corridors.</p>
+                        <p class="font-vt text-lg text-gray-300">Survive high-stakes boss encounters where deadly titan
+                            hazards actively chase you through narrow corridors.</p>
                     </div>
                     <div class="bg-pixel-dark p-8 border-2 border-pixel-yellow shadow-[4px_4px_0px_#ffe600]">
-                        <div class="w-14 h-14 bg-pixel-yellow flex items-center justify-center text-black font-arcade text-2xl mb-6"><i class="fas fa-bolt"></i></div>
+                        <div
+                            class="w-14 h-14 bg-pixel-yellow flex items-center justify-center text-black font-arcade text-2xl mb-6">
+                            <i class="fas fa-bolt"></i></div>
                         <h3 class="font-arcade text-xl text-white mb-4">HAZARD REFLEXES</h3>
-                        <p class="font-vt text-lg text-gray-300">Dodge lethal stationary and moving red entities that block critical intersections and split-second turns.</p>
+                        <p class="font-vt text-lg text-gray-300">Dodge lethal stationary and moving red entities that
+                            block critical intersections and split-second turns.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="action" class="relative py-36 sm:py-48 border-y-4 border-pixel-yellow overflow-hidden bg-pixel-black">
+            <!-- Background GIF with Overlay -->
+            <div class="absolute inset-0 gameplay-gif-bg opacity-45">
+            </div>
+            <!-- Radial and Gradient overlays for readability and retro contrast -->
+            <div class="absolute inset-0 bg-gradient-to-t from-pixel-black via-pixel-black/60 to-pixel-black"></div>
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(5,5,8,0.85)_100%)]">
+            </div>
+
+            <!-- Content Overlay -->
+            <div class="relative z-10 max-w-4xl mx-auto px-4 text-center space-y-6">
+                <div
+                    class="inline-flex items-center space-x-2 px-4 py-2 bg-pixel-black/90 border-2 border-pixel-yellow text-pixel-yellow font-arcade text-xs tracking-wider uppercase shadow-[4px_4px_0px_#000]">
+                    <span class="w-3 h-3 bg-pixel-red animate-pulse inline-block"></span>
+                    <span>LIVE GAMEPLAY IN MOTION</span>
+                </div>
+                <h2
+                    class="font-arcade text-2xl sm:text-4xl text-white leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+                    FEEL THE <span class="text-pixel-yellow glow-title">FAST-PACED</span> MAZE ADRENALINE
+                </h2>
+                <p class="font-vt text-2xl text-gray-200 max-w-2xl mx-auto drop-shadow-md">
+                    Watch high-speed escape action, split-second reflexes, and boss chases in real-time gameplay motion!
+                </p>
+                <div class="pt-4 flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="#demo" onclick="playAudio('coin'); focusCanvas();"
+                        class="w-full sm:w-auto btn-retro font-arcade text-xs px-8 py-4 bg-pixel-yellow text-black border-2 border-black hover:bg-white transition-all shadow-[4px_4px_0px_#ff0055]">
+                        <i class="fas fa-gamepad mr-2"></i>PLAY DEMO NOW
+                    </a>
+                    <button onclick="openTrailerModal()"
+                        class="w-full sm:w-auto btn-retro font-retro text-xs px-6 py-4 bg-pixel-dark/90 text-pixel-blue border-2 border-pixel-blue hover:text-pixel-yellow hover:border-pixel-yellow transition-all">
+                        <i class="fas fa-play-circle mr-2"></i>FULL TRAILER
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- App Download Section -->
+        <section id="download" class="py-20 bg-pixel-dark border-b-4 border-pixel-yellow relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center space-y-4 mb-16">
+                    <span
+                        class="font-retro text-xs text-pixel-green tracking-widest uppercase px-3 py-1 bg-pixel-black border border-pixel-green">MOBILE
+                        RELEASE</span>
+                    <h2 class="font-arcade text-2xl sm:text-3xl text-white">GET BODDY ON MOBILE</h2>
+                    <p class="font-vt text-xl text-gray-400 max-w-xl mx-auto">Scan the QR code or click below to
+                        download the game on your mobile device!</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <!-- Google Play Store Card -->
+                    <div
+                        class="bg-pixel-black border-2 border-pixel-green p-6 flex flex-col items-center text-center shadow-[4px_4px_0px_#00ff66]">
+                        <div
+                            class="w-12 h-12 bg-pixel-green text-black flex items-center justify-center font-arcade text-2xl mb-4 border border-black">
+                            <i class="fab fa-google-play"></i>
+                        </div>
+                        <h3 class="font-arcade text-lg text-white mb-2">GOOGLE PLAY</h3>
+                        <p class="font-vt text-base text-gray-400 mb-6">Available now for Android devices.</p>
+
+                        <!-- QR Code Container -->
+                        <div class="bg-white p-3 border-2 border-pixel-wall mb-6 shadow-md">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://play.google.com/store/apps/details?id=com.b_studio.boddy"
+                                alt="Google Play QR Code" class="w-36 h-36">
+                        </div>
+
+                        <a href="https://play.google.com/store/apps/details?id=com.b_studio.boddy" target="_blank"
+                            rel="noopener noreferrer" onclick="playAudio('coin')"
+                            class="w-full btn-retro font-arcade text-xs px-6 py-3.5 bg-pixel-green text-black border-2 border-black hover:bg-white transition-all flex items-center justify-center space-x-2">
+                            <i class="fab fa-google-play text-sm"></i>
+                            <span>GET IT ON GOOGLE PLAY</span>
+                        </a>
+                    </div>
+
+                    <!-- Apple App Store Card -->
+                    <div
+                        class="bg-pixel-black border-2 border-pixel-blue p-6 flex flex-col items-center text-center shadow-[4px_4px_0px_#354dff]">
+                        <div
+                            class="w-12 h-12 bg-pixel-blue text-black flex items-center justify-center font-arcade text-2xl mb-4 border border-black">
+                            <i class="fab fa-apple"></i>
+                        </div>
+                        <h3 class="font-arcade text-lg text-white mb-2">APP STORE</h3>
+                        <p class="font-vt text-base text-gray-400 mb-6">Available now for iOS devices.</p>
+
+                        <!-- QR Code Container -->
+                        <div class="bg-white p-3 border-2 border-pixel-wall mb-6 shadow-md">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://apps.apple.com/app/boddy/id123456789"
+                                alt="App Store QR Code" class="w-36 h-36">
+                        </div>
+
+                        <a href="https://apps.apple.com/app/boddy/id123456789" target="_blank" rel="noopener noreferrer"
+                            onclick="playAudio('coin')"
+                            class="w-full btn-retro font-arcade text-xs px-6 py-3.5 bg-pixel-blue text-black border-2 border-black hover:bg-white transition-all flex items-center justify-center space-x-2">
+                            <i class="fab fa-apple text-base"></i>
+                            <span>DOWNLOAD ON APP STORE</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Media Gallery Section (Videos & Screenshots) -->
-        <section id="media" class="py-20 bg-pixel-dark border-b border-pixel-wall relative">
+        <section id="media" class="py-20 bg-pixel-dark border-b-4 border-pixel-yellow relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                
+
                 <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                     <div class="space-y-3 text-center md:text-left">
-                        <span class="font-retro text-xs text-pixel-green tracking-widest uppercase px-3 py-1 bg-pixel-black border border-pixel-green">MULTIMEDIA SHOWCASE</span>
+                        <span
+                            class="font-retro text-xs text-pixel-green tracking-widest uppercase px-3 py-1 bg-pixel-black border border-pixel-green">MULTIMEDIA
+                            SHOWCASE</span>
                         <h2 class="font-arcade text-2xl sm:text-3xl text-white">VIDEOS & SCREENSHOTS</h2>
-                        <p class="font-vt text-xl text-gray-400">Get a glimpse of high-speed escapes, boss chases, and labyrinth maps.</p>
+                        <p class="font-vt text-xl text-gray-400">Get a glimpse of high-speed escapes, boss chases, and
+                            labyrinth maps.</p>
                     </div>
 
                     <!-- Filter Buttons -->
                     <div class="flex flex-wrap items-center justify-center gap-2 font-retro text-xs">
-                        <button onclick="filterMedia('all')" id="btn-filter-all" class="px-4 py-2.5 bg-pixel-yellow text-black border-2 border-black font-arcade shadow-[2px_2px_0px_#000]">
+                        <button onclick="filterMedia('all')" id="btn-filter-all"
+                            class="px-4 py-2.5 bg-pixel-yellow text-black border-2 border-black font-arcade shadow-[2px_2px_0px_#000]">
                             ALL MEDIA
                         </button>
-                        <button onclick="filterMedia('video')" id="btn-filter-video" class="px-4 py-2.5 bg-pixel-black text-gray-300 border-2 border-pixel-wall hover:border-pixel-blue hover:text-pixel-blue transition-colors">
+                        <button onclick="filterMedia('video')" id="btn-filter-video"
+                            class="px-4 py-2.5 bg-pixel-black text-gray-300 border-2 border-pixel-wall hover:border-pixel-blue hover:text-pixel-blue transition-colors">
                             <i class="fas fa-video text-pixel-red mr-1"></i> VIDEOS
                         </button>
-                        <button onclick="filterMedia('screenshot')" id="btn-filter-screenshot" class="px-4 py-2.5 bg-pixel-black text-gray-300 border-2 border-pixel-wall hover:border-pixel-yellow hover:text-pixel-yellow transition-colors">
+                        <button onclick="filterMedia('screenshot')" id="btn-filter-screenshot"
+                            class="px-4 py-2.5 bg-pixel-black text-gray-300 border-2 border-pixel-wall hover:border-pixel-yellow hover:text-pixel-yellow transition-colors">
                             <i class="fas fa-image text-pixel-green mr-1"></i> SCREENSHOTS
                         </button>
                     </div>
@@ -290,57 +471,188 @@
                 <!-- Media Cards Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="mediaGrid">
                     <!-- Video Card 1 -->
-                    <div class="media-card media-item screenshot bg-pixel-black border-2 border-pixel-blue p-4 shadow-[4px_4px_0px_#00ffe0]">
+                    <div
+                        class="media-card media-item screenshot bg-pixel-black border-2 border-pixel-blue p-4 shadow-[4px_4px_0px_#354dff]">
                         <div class="relative aspect-video bg-pixel-dark border border-pixel-wall overflow-hidden group cursor-pointer"
-                        onclick="openMediaLightbox('image', 'Boss Rush Level 03 Gameplay', 'Watch Boddy navigate intense tight turns while being pursued by the Cyber-Beast boss.', './boss_screen.png')">
-                            <img src="./boss_screen.png" alt="Stage 12 Screenshot" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                            <div class="absolute inset-0 bg-pixel-black/20 group-hover:bg-transparent transition-colors"></div>
-                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                <div class="w-12 h-12 bg-pixel-yellow text-black flex items-center justify-center text-lg font-arcade border-2 border-black">
+                            onclick="openMediaLightbox('image', 'Boss Rush Level 03 Gameplay', 'Watch Boddy navigate intense tight turns while being pursued by the Cyber-Beast boss.', './boss_screen.png')">
+                            <img src="./boss_screen.png" alt="Stage 12 Screenshot"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div
+                                class="absolute inset-0 bg-pixel-black/20 group-hover:bg-transparent transition-colors">
+                            </div>
+                            <div
+                                class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div
+                                    class="w-12 h-12 bg-pixel-yellow text-black flex items-center justify-center text-lg font-arcade border-2 border-black">
                                     <i class="fas fa-search-plus"></i>
                                 </div>
                             </div>
-                            <span class="absolute top-2 left-2 bg-pixel-yellow text-black font-retro text-[10px] px-2 py-0.5 uppercase font-bold">SCREENSHOT</span>
+                            <span
+                                class="absolute top-2 left-2 bg-pixel-yellow text-black font-retro text-[10px] px-2 py-0.5 uppercase font-bold">SCREENSHOT</span>
                         </div>
                         <div class="mt-4 space-y-1">
-                            <h3 class="font-arcade text-sm text-white hover:text-pixel-yellow transition-colors">BOSS RUSH LEVEL 03</h3>
-                            <p class="font-vt text-lg text-gray-400">High-speed pursuit mechanics and corner drifts in the Neon Grid.</p>
+                            <h3 class="font-arcade text-sm text-white hover:text-pixel-yellow transition-colors">BOSS
+                                RUSH LEVEL 03</h3>
+                            <p class="font-vt text-lg text-gray-400">High-speed pursuit mechanics and corner drifts in
+                                the Neon Grid.</p>
                         </div>
                     </div>
 
                     <!-- Screenshot Card 1 -->
-                    <div class="media-card media-item screenshot bg-pixel-black border-2 border-pixel-yellow p-4 shadow-[4px_4px_0px_#ffe600]">
+                    <div
+                        class="media-card media-item screenshot bg-pixel-black border-2 border-pixel-yellow p-4 shadow-[4px_4px_0px_#ffe600]">
                         <div class="relative aspect-video bg-pixel-dark border border-pixel-wall overflow-hidden group cursor-pointer"
-                        onclick="openMediaLightbox('image', 'Labyrinth Layout - Stage 12', 'Detailed pixel layout of complex wall junctions and trapped pathways.', './screen4.png')">
-                            <img src="./screen4.png" alt="Stage 12 Screenshot" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                            <div class="absolute inset-0 bg-pixel-black/20 group-hover:bg-transparent transition-colors"></div>
-                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                <div class="w-12 h-12 bg-pixel-yellow text-black flex items-center justify-center text-lg font-arcade border-2 border-black">
+                            onclick="openMediaLightbox('image', 'Labyrinth Layout - Stage 12', 'Detailed pixel layout of complex wall junctions and trapped pathways.', './screen4.png')">
+                            <img src="./screen4.png" alt="Stage 12 Screenshot"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div
+                                class="absolute inset-0 bg-pixel-black/20 group-hover:bg-transparent transition-colors">
+                            </div>
+                            <div
+                                class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div
+                                    class="w-12 h-12 bg-pixel-yellow text-black flex items-center justify-center text-lg font-arcade border-2 border-black">
                                     <i class="fas fa-search-plus"></i>
                                 </div>
                             </div>
-                            <span class="absolute top-2 left-2 bg-pixel-yellow text-black font-retro text-[10px] px-2 py-0.5 uppercase font-bold">SCREENSHOT</span>
+                            <span
+                                class="absolute top-2 left-2 bg-pixel-yellow text-black font-retro text-[10px] px-2 py-0.5 uppercase font-bold">SCREENSHOT</span>
                         </div>
                         <div class="mt-4 space-y-1">
-                            <h3 class="font-arcade text-sm text-white hover:text-pixel-yellow transition-colors">STAGE 12: THE DEEP MAZE</h3>
-                            <p class="font-vt text-lg text-gray-400">Intricate corridors requiring precise memory and timing.</p>
+                            <h3 class="font-arcade text-sm text-white hover:text-pixel-yellow transition-colors">STAGE
+                                12: THE DEEP MAZE</h3>
+                            <p class="font-vt text-lg text-gray-400">Intricate corridors requiring precise memory and
+                                timing.</p>
                         </div>
                     </div>
 
 
                     <!-- Screenshot Card 3 -->
-                    <div class="media-card media-item screenshot bg-pixel-black border-2 border-pixel-red p-4 shadow-[4px_4px_0px_#ff0055]">
-                        <div class="relative aspect-video bg-pixel-dark border border-pixel-wall overflow-hidden group cursor-pointer" onclick="openMediaLightbox('image', 'Boss Entity Encounter', 'The Titan Hazard guarding the portal gate in Sector 4.', './screen3.png')">
-                            <img src="./screen3.png" alt="Boss Encounter" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                            <span class="absolute top-2 left-2 bg-pixel-red text-white font-retro text-[10px] px-2 py-0.5 uppercase font-bold">SCREENSHOT</span>
+                    <div
+                        class="media-card media-item screenshot bg-pixel-black border-2 border-pixel-red p-4 shadow-[4px_4px_0px_#ff0055]">
+                        <div class="relative aspect-video bg-pixel-dark border border-pixel-wall overflow-hidden group cursor-pointer"
+                            onclick="openMediaLightbox('image', 'Boss Entity Encounter', 'The Titan Hazard guarding the portal gate in Sector 4.', './screen3.png')">
+                            <img src="./screen3.png" alt="Boss Encounter"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div
+                                class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div
+                                    class="w-12 h-12 bg-pixel-yellow text-black flex items-center justify-center text-lg font-arcade border-2 border-black">
+                                    <i class="fas fa-search-plus"></i>
+                                </div>
+                            </div>
+                            <span
+                                class="absolute top-2 left-2 bg-pixel-red text-white font-retro text-[10px] px-2 py-0.5 uppercase font-bold">SCREENSHOT</span>
                         </div>
                         <div class="mt-4 space-y-1">
-                            <h3 class="font-arcade text-sm text-white hover:text-pixel-yellow transition-colors">TITAN HAZARD SHOWDOWN</h3>
-                            <p class="font-vt text-lg text-gray-400">Outmaneuver mega bosses in tight quarter dead-ends.</p>
+                            <h3 class="font-arcade text-sm text-white hover:text-pixel-yellow transition-colors">TITAN
+                                HAZARD SHOWDOWN</h3>
+                            <p class="font-vt text-lg text-gray-400">Outmaneuver mega bosses in tight quarter dead-ends.
+                            </p>
                         </div>
                     </div>
 
 
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Media Section -->
+        <section id="socials" class="py-20 bg-pixel-black border-b border-pixel-wall relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center space-y-4 mb-16">
+                    <span
+                        class="font-retro text-xs text-pixel-red tracking-widest uppercase px-3 py-1 bg-pixel-dark border border-pixel-red">JOIN
+                        THE HQ</span>
+                    <h2 class="font-arcade text-2xl sm:text-3xl text-white">COMMUNITY & SOCIALS</h2>
+                    <p class="font-vt text-xl text-gray-400 max-w-xl mx-auto">Connect with fellow runners, share high
+                        scores, watch gameplay walkthroughs, and get early update leaks!</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- YouTube Card -->
+                    <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" onclick="playAudio('blip')"
+                        class="media-card bg-pixel-dark border-2 border-pixel-red p-6 flex flex-col justify-between group shadow-[4px_4px_0px_#ff0055] hover:shadow-pixel-red transition-all">
+                        <div>
+                            <div
+                                class="w-12 h-12 bg-pixel-red text-white flex items-center justify-center font-arcade text-2xl mb-4 group-hover:scale-110 transition-transform border border-black">
+                                <i class="fab fa-youtube"></i>
+                            </div>
+                            <h3
+                                class="font-arcade text-base text-white group-hover:text-pixel-red transition-colors mb-2">
+                                YOUTUBE</h3>
+                            <p class="font-vt text-base text-gray-400">Watch level guides, boss fight tutorials, and
+                                official game trailers.</p>
+                        </div>
+                        <div
+                            class="mt-6 flex items-center justify-between font-retro text-xs text-pixel-red group-hover:text-pixel-red pt-4 border-t border-pixel-wall">
+                            <span>SUBSCRIBE</span>
+                            <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </a>
+
+                    <!-- Reddit Card -->
+                    <a href="https://reddit.com" target="_blank" rel="noopener noreferrer" onclick="playAudio('blip')"
+                        class="media-card bg-pixel-dark border-2 border-pixel-yellow p-6 flex flex-col justify-between group shadow-[4px_4px_0px_#ffe600] hover:shadow-pixel-yellow transition-all">
+                        <div>
+                            <div
+                                class="w-12 h-12 bg-pixel-yellow text-black flex items-center justify-center font-arcade text-2xl mb-4 group-hover:scale-110 transition-transform border border-black">
+                                <i class="fab fa-reddit-alien"></i>
+                            </div>
+                            <h3
+                                class="font-arcade text-base text-white group-hover:text-pixel-yellow transition-colors mb-2">
+                                REDDIT</h3>
+                            <p class="font-vt text-base text-gray-400">Join discussions, share custom maze strategies,
+                                and post feedback.</p>
+                        </div>
+                        <div
+                            class="mt-6 flex items-center justify-between font-retro text-xs text-pixel-yellow pt-4 border-t border-pixel-wall">
+                            <span>r/BoddyGame</span>
+                            <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </a>
+
+                    <!-- X (Twitter) Card -->
+                    <a href="https://x.com" target="_blank" rel="noopener noreferrer" onclick="playAudio('blip')"
+                        class="media-card bg-pixel-dark border-2 border-pixel-blue p-6 flex flex-col justify-between group shadow-[4px_4px_0px_#354dff] hover:shadow-pixel-blue transition-all">
+                        <div>
+                            <div
+                                class="w-12 h-12 bg-pixel-blue text-black flex items-center justify-center font-arcade text-2xl mb-4 group-hover:scale-110 transition-transform border border-black">
+                                <i class="fab fa-twitter "></i>
+                            </div>
+                            <h3
+                                class="font-arcade text-base text-white group-hover:text-pixel-blue transition-colors mb-2">
+                                X / TWITTER</h3>
+                            <p class="font-vt text-base text-gray-400">Get live dev logs, patch notes, speedrun
+                                challenges, and announcements.</p>
+                        </div>
+                        <div
+                            class="mt-6 flex items-center justify-between font-retro text-xs text-pixel-blue pt-4 border-t border-pixel-wall">
+                            <span>FOLLOW US</span>
+                            <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </a>
+
+                    <!-- Discord Card -->
+                    <a href="https://discord.com" target="_blank" rel="noopener noreferrer" onclick="playAudio('blip')"
+                        class="media-card bg-pixel-dark border-2 border-pixel-green p-6 flex flex-col justify-between group shadow-[4px_4px_0px_#00ff66] hover:shadow-pixel-green transition-all">
+                        <div>
+                            <div
+                                class="w-12 h-12 bg-pixel-green text-black flex items-center justify-center font-arcade text-2xl mb-4 group-hover:scale-110 transition-transform border border-black">
+                                <i class="fab fa-discord"></i>
+                            </div>
+                            <h3
+                                class="font-arcade text-base text-white group-hover:text-pixel-green transition-colors mb-2">
+                                DISCORD</h3>
+                            <p class="font-vt text-base text-gray-400">Chat live with developers, test beta builds, and
+                                earn community roles.</p>
+                        </div>
+                        <div
+                            class="mt-6 flex items-center justify-between font-retro text-xs text-pixel-green pt-4 border-t border-pixel-wall">
+                            <span>JOIN SERVER</span>
+                            <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    </a>
                 </div>
             </div>
         </section>
@@ -350,10 +662,12 @@
     <div id="privacyView" class="hidden py-16 bg-pixel-dark border-b border-pixel-wall min-h-screen">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-pixel-black border-4 border-pixel-blue p-8 shadow-[8px_8px_0px_#000] relative">
-                
+
                 <div class="flex items-center justify-between border-b-2 border-pixel-wall pb-6 mb-8">
                     <div>
-                        <span class="font-retro text-xs text-pixel-yellow uppercase tracking-widest px-3 py-1 bg-pixel-dark border border-pixel-yellow">LEGAL DOCUMENT</span>
+                        <span
+                            class="font-retro text-xs text-pixel-yellow uppercase tracking-widest px-3 py-1 bg-pixel-dark border border-pixel-yellow">LEGAL
+                            DOCUMENT</span>
                         <h1 class="font-arcade text-2xl sm:text-3xl text-white mt-3">PRIVACY POLICY</h1>
                     </div>
                     <div class="text-right font-vt text-sm text-gray-400">
@@ -364,13 +678,18 @@
 
                 <div class="space-y-8 font-vt text-lg text-gray-300 leading-relaxed">
                     <div>
-                        <h2 class="font-arcade text-base text-pixel-yellow mb-3">1. OVERVIEW & GOOGLE PLAY COMPLIANCE</h2>
-                        <p>This Privacy Policy applies to the Boddy mobile game. We respect your privacy and are committed to maintaining a secure and transparent gaming environment in accordance with Google Play Developer Policies.</p>
+                        <h2 class="font-arcade text-base text-pixel-yellow mb-3">1. OVERVIEW & GOOGLE PLAY COMPLIANCE
+                        </h2>
+                        <p>This Privacy Policy applies to the Boddy mobile game. We respect your privacy and are
+                            committed to maintaining a secure and transparent gaming environment in accordance with
+                            Google Play Developer Policies.</p>
                     </div>
 
                     <div class="bg-pixel-dark p-6 border-2 border-pixel-wall">
                         <h2 class="font-arcade text-base text-pixel-blue mb-3">2. DATA WE COLLECT</h2>
-                        <p class="mb-4">We collect non-personal, anonymous gameplay analytics to help us balance levels, debug performance issues, and enhance player experience. The collected metrics include solely:</p>
+                        <p class="mb-4">We collect non-personal, anonymous gameplay analytics to help us balance levels,
+                            debug performance issues, and enhance player experience. The collected metrics include
+                            solely:</p>
                         <ul class="space-y-2 list-disc list-inside text-gray-200">
                             <li>Gameplay outcomes (levels attempted, won, or defeated)</li>
                             <li>In-game customization selections (which cosmetic skins are equipped)</li>
@@ -380,22 +699,29 @@
 
                     <div>
                         <h2 class="font-arcade text-base text-pixel-red mb-3">3. NO PERSONAL DATA COLLECTION</h2>
-                        <p>Boddy does <strong class="text-white">NOT</strong> collect, request, or store any Personally Identifiable Information (PII). We do not collect names, email addresses, device contacts, precise location data, phone numbers, or IP addresses.</p>
+                        <p>Boddy does <strong class="text-white">NOT</strong> collect, request, or store any Personally
+                            Identifiable Information (PII). We do not collect names, email addresses, device contacts,
+                            precise location data, phone numbers, or IP addresses.</p>
                     </div>
 
                     <div>
                         <h2 class="font-arcade text-base text-pixel-yellow mb-3">4. DATA SECURITY & SHARING</h2>
-                        <p>Because all collected analytics data is entirely aggregated and anonymous, it cannot be linked to your individual identity or device. We do not sell, rent, or trade your gameplay analytics data with third parties.</p>
+                        <p>Because all collected analytics data is entirely aggregated and anonymous, it cannot be
+                            linked to your individual identity or device. We do not sell, rent, or trade your gameplay
+                            analytics data with third parties.</p>
                     </div>
 
                     <div>
                         <h2 class="font-arcade text-base text-pixel-blue mb-3">5. CHILDREN'S PRIVACY</h2>
-                        <p>Boddy is designed for general audiences and complies with applicable global privacy standards. Since we do not collect personal data from any users, children's personal information is protected by design.</p>
+                        <p>Boddy is designed for general audiences and complies with applicable global privacy
+                            standards. Since we do not collect personal data from any users, children's personal
+                            information is protected by design.</p>
                     </div>
                 </div>
 
                 <div class="mt-10 pt-6 border-t-2 border-pixel-wall text-center">
-                    <button onclick="showPage('home')" class="btn-retro font-arcade text-xs px-8 py-4 bg-pixel-yellow text-black border-2 border-black hover:bg-white transition-all shadow-pixel-yellow">
+                    <button onclick="showPage('home')"
+                        class="btn-retro font-arcade text-xs px-8 py-4 bg-pixel-yellow text-black border-2 border-black hover:bg-white transition-all shadow-pixel-yellow">
                         RETURN TO GAME
                     </button>
                 </div>
@@ -406,8 +732,9 @@
 
     <!-- Footer Section -->
     <footer class="bg-pixel-black py-12 border-t-2 border-pixel-wall">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-            
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+
             <div class="flex items-center space-x-3">
                 <div class="w-8 h-8 bg-pixel-yellow flex items-center justify-center border border-black">
                     <div class="w-3 h-3 bg-black"></div>
@@ -417,31 +744,43 @@
 
             <div class="font-vt text-lg text-gray-400 text-center space-y-1">
                 <div>&copy; 2026 BStudio. All Rights Reserved.</div>
-                <div><a href="#privacy" onclick="showPage('privacy')" class="text-pixel-blue hover:text-pixel-yellow underline font-retro text-xs">PRIVACY POLICY</a></div>
+                <div><a href="#privacy" onclick="showPage('privacy')"
+                        class="text-pixel-blue hover:text-pixel-yellow underline font-retro text-xs">PRIVACY POLICY</a>
+                </div>
             </div>
 
             <div class="flex space-x-4 text-xl text-gray-400">
-                <a href="#" class="hover:text-pixel-yellow transition-colors"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="hover:text-pixel-blue transition-colors"><i class="fab fa-discord"></i></a>
-                <a href="#" class="hover:text-pixel-red transition-colors"><i class="fab fa-github"></i></a>
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-pixel-red transition-colors"><i class="fab fa-youtube"></i></a>
+                <a href="https://reddit.com" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-pixel-yellow transition-colors"><i class="fab fa-reddit-alien"></i></a>
+                <a href="https://x.com" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-pixel-blue transition-colors"><i class="fab fa-x-twitter"></i></a>
+                <a href="https://discord.com" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-pixel-green transition-colors"><i class="fab fa-discord"></i></a>
             </div>
 
         </div>
     </footer>
 
     <!-- Video Modal -->
-    <div id="trailerModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div id="trailerModal"
+        class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-pixel-dark border-4 border-pixel-blue p-4 sm:p-6 max-w-2xl w-full relative shadow-pixel-blue">
-            <button onclick="closeTrailerModal()" class="absolute top-3 right-3 text-gray-400 hover:text-white font-arcade text-xs">✕</button>
+            <button onclick="closeTrailerModal()"
+                class="absolute top-3 right-3 text-gray-400 hover:text-white font-arcade text-xs">✕</button>
             <h3 class="font-arcade text-sm sm:text-base text-pixel-blue mb-4">GAMEPLAY PREVIEW</h3>
-            <div class="aspect-video bg-pixel-black border-2 border-pixel-wall flex flex-col items-center justify-center relative overflow-hidden">
-                <div class="w-20 h-20 bg-pixel-yellow/20 border-2 border-pixel-yellow rounded-full flex items-center justify-center text-pixel-yellow text-3xl animate-ping">
+            <div
+                class="aspect-video bg-pixel-black border-2 border-pixel-wall flex flex-col items-center justify-center relative overflow-hidden">
+                <div
+                    class="w-20 h-20 bg-pixel-yellow/20 border-2 border-pixel-yellow rounded-full flex items-center justify-center text-pixel-yellow text-3xl animate-ping">
                     <i class="fas fa-play"></i>
                 </div>
                 <p class="font-vt text-2xl text-pixel-yellow mt-4">MAZE RUNNER TRAILER</p>
             </div>
             <div class="mt-4 text-center">
-                <button onclick="closeTrailerModal(); focusCanvas();" class="btn-retro font-arcade text-xs px-6 py-3 bg-pixel-yellow text-black border-2 border-black">
+                <button onclick="closeTrailerModal(); focusCanvas();"
+                    class="btn-retro font-arcade text-xs px-6 py-3 bg-pixel-yellow text-black border-2 border-black">
                     TRY DEMO NOW
                 </button>
             </div>
@@ -449,20 +788,26 @@
     </div>
 
     <!-- General Media Lightbox Modal -->
-    <div id="mediaLightboxModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-pixel-dark border-4 border-pixel-yellow p-4 sm:p-6 max-w-3xl w-full relative shadow-[0_0_40px_rgba(255,230,0,0.3)]">
-            <button onclick="closeMediaLightbox()" class="absolute top-3 right-3 text-gray-400 hover:text-pixel-red font-arcade text-base z-10">✕</button>
-            
+    <div id="mediaLightboxModal"
+        class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div
+            class="bg-pixel-dark border-4 border-pixel-yellow p-4 sm:p-6 max-w-3xl w-full relative shadow-[0_0_40px_rgba(255,230,0,0.3)]">
+            <button onclick="closeMediaLightbox()"
+                class="absolute top-3 right-3 text-gray-400 hover:text-pixel-red font-arcade text-base z-10">✕</button>
+
             <h3 id="lightboxTitle" class="font-arcade text-base sm:text-lg text-pixel-yellow mb-2 pr-6">MEDIA TITLE</h3>
             <p id="lightboxDesc" class="font-vt text-lg text-gray-300 mb-4">Media description goes here.</p>
-            
-            <div id="lightboxContent" class="aspect-video bg-pixel-black border-2 border-pixel-wall flex items-center justify-center relative overflow-hidden">
+
+            <div id="lightboxContent"
+                class="aspect-video bg-pixel-black border-2 border-pixel-wall flex items-center justify-center relative overflow-hidden">
                 <!-- Dynamic Content Insertion -->
             </div>
 
             <div class="mt-4 flex items-center justify-between border-t border-pixel-wall pt-3">
-                <span class="font-retro text-xs text-pixel-blue"><i class="fas fa-gamepad mr-1"></i> BODDY MAZE ARCHIVE</span>
-                <button onclick="closeMediaLightbox()" class="btn-retro font-arcade text-xs px-5 py-2 bg-pixel-red text-white border-2 border-black hover:bg-pixel-yellow hover:text-black">
+                <span class="font-retro text-xs text-pixel-blue"><i class="fas fa-gamepad mr-1"></i> BODDY MAZE
+                    ARCHIVE</span>
+                <button onclick="closeMediaLightbox()"
+                    class="btn-retro font-arcade text-xs px-5 py-2 bg-pixel-red text-white border-2 border-black hover:bg-pixel-yellow hover:text-black">
                     CLOSE
                 </button>
             </div>
@@ -522,7 +867,7 @@
                     gain.gain.setValueAtTime(0.15, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
                     osc.start(now); osc.stop(now + 0.3);
                 }
-            } catch (e) {}
+            } catch (e) { }
         }
 
         /* Canvas Maze Engine */
@@ -532,21 +877,21 @@
         const TILE_SIZE = canvas.width / GRID_SIZE;
 
         const mazeMapTemplate = [
-            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-            [1,0,0,0,1,0,0,0,0,0,0,0,0,2,1],
-            [1,0,1,0,1,0,1,1,1,1,1,1,0,1,1],
-            [1,0,1,0,0,0,0,0,0,0,0,1,0,0,1],
-            [1,0,1,1,1,1,0,1,1,1,0,1,1,0,1],
-            [1,0,0,0,0,1,0,0,0,1,0,0,0,0,1],
-            [1,1,1,1,0,1,1,1,0,1,1,1,1,0,1],
-            [1,0,0,0,0,0,0,1,0,0,0,0,0,0,1],
-            [1,0,1,1,1,1,0,1,1,1,1,1,1,0,1],
-            [1,0,0,0,0,1,0,0,0,0,0,0,1,0,1],
-            [1,1,1,1,0,1,1,1,1,1,1,0,1,0,1],
-            [1,0,0,0,0,0,0,0,0,0,1,0,0,0,1],
-            [1,0,1,1,1,1,1,1,1,0,1,1,1,0,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1],
+            [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1],
+            [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+            [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1],
+            [1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+            [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         ];
 
         let maze = [];
@@ -554,7 +899,7 @@
         let gameRunning = false;
         let animFrameId = null;
 
-        let player = { x: 1, y: 13, color: '#00f0ff' };
+        let player = { x: 1, y: 13, color: '#354dff' };
         let hazard = { x: 7, y: 7, color: '#ff0055', dir: 1 };
 
         function resetMazeData() {
@@ -582,7 +927,7 @@
 
         function updateHUD() {
             let livesStr = '';
-            for(let i = 0; i < lives; i++) livesStr += '♥';
+            for (let i = 0; i < lives; i++) livesStr += '♥';
             document.getElementById('gameLivesDisplay').innerText = livesStr || 'DEAD';
         }
 
@@ -644,7 +989,7 @@
                     const tile = maze[r][c]; const x = c * TILE_SIZE; const y = r * TILE_SIZE;
                     if (tile === 1) {
                         ctx.fillStyle = '#1f2041'; ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
-                        ctx.strokeStyle = '#00f0ff'; ctx.lineWidth = 1; ctx.strokeRect(x + 2, y + 2, TILE_SIZE - 4, TILE_SIZE - 4);
+                        ctx.strokeStyle = '#354dff'; ctx.lineWidth = 1; ctx.strokeRect(x + 2, y + 2, TILE_SIZE - 4, TILE_SIZE - 4);
                     } else if (tile === 2) {
                         ctx.fillStyle = '#ffe600'; ctx.fillRect(x + 4, y + 4, TILE_SIZE - 8, TILE_SIZE - 8);
                     }
@@ -674,7 +1019,7 @@
         function filterMedia(category) {
             playAudio('blip');
             const items = document.querySelectorAll('.media-item');
-            
+
             const btnAll = document.getElementById('btn-filter-all');
             const btnVideo = document.getElementById('btn-filter-video');
             const btnShot = document.getElementById('btn-filter-screenshot');
@@ -724,10 +1069,11 @@
         function openTrailerModal() { document.getElementById('trailerModal').classList.remove('hidden'); playAudio('blip'); }
         function closeTrailerModal() { document.getElementById('trailerModal').classList.add('hidden'); }
 
-        window.onload = function() {
+        window.onload = function () {
             resetMazeData(); renderGame();
             if (window.location.hash === '#privacy') showPage('privacy');
         };
     </script>
 </body>
+
 </html>
