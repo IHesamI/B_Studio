@@ -369,6 +369,46 @@
             </div>
         </section>
 
+                <section id="trailer" class="py-20 bg-pixel-black border-b border-pixel-wall relative">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center space-y-4 mb-10">
+                    <span class="font-retro text-xs text-pixel-red tracking-widest uppercase px-3 py-1 bg-pixel-dark border border-pixel-red shadow-[2px_2px_0px_#ff0055]">
+                        <i class="fab fa-youtube text-pixel-red mr-1"></i> OFFICIAL GAMEPLAY TRAILER
+                    </span>
+                    <h2 class="font-arcade text-2xl sm:text-4xl text-white">WATCH BODDY IN ACTION</h2>
+                    <p class="font-vt text-xl text-gray-300 max-w-2xl mx-auto">
+                        Experience high-speed maze navigation, split-second hazard dodges, and heart-pounding titan boss chases in our feature trailer!
+                    </p>
+                </div>
+
+                <div class="bg-pixel-dark border-4 border-pixel-red p-3 sm:p-6 shadow-[0_0_35px_rgba(255,0,85,0.35)] relative">
+                    <div class="aspect-video w-full bg-pixel-black border-2 border-pixel-wall relative overflow-hidden">
+                        <iframe 
+                            class="w-full h-full"
+                            src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=0&rel=0" 
+                            title="Boddy Arcade Official Game Trailer" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <div class="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t-2 border-pixel-wall font-retro text-xs">
+                        <div class="flex items-center space-x-2 text-pixel-yellow">
+                            <i class="fas fa-play-circle text-sm animate-pulse"></i>
+                            <span>BODDY: RETRO ARCADE MAZE ESCAPE</span>
+                        </div>
+                        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" onclick="playAudio('blip')"
+                            class="btn-retro px-4 py-2 bg-pixel-red text-white border-2 border-black hover:bg-pixel-yellow hover:text-black transition-colors flex items-center space-x-2">
+                            <i class="fab fa-youtube"></i>
+                            <span>WATCH ON YOUTUBE</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
         <!-- Features Grid Section -->
         <section id="features" class="py-20 bg-pixel-black border-b border-pixel-wall relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -482,26 +522,25 @@
 
                     <!-- Apple App Store Card -->
                     <div
-                        class="bg-pixel-black border-2 border-pixel-blue p-6 flex flex-col items-center text-center shadow-[4px_4px_0px_#354dff]">
+                        class="bg-pixel-black border-2 border-pixel-wall opacity-80 p-6 flex flex-col items-center text-center shadow-[4px_4px_0px_#1f2041]">
                         <div
-                            class="w-12 h-12 bg-pixel-blue text-black flex items-center justify-center font-arcade text-2xl mb-4 border border-black">
+                            class="w-12 h-12 bg-pixel-wall text-gray-400 flex items-center justify-center font-arcade text-2xl mb-4 border border-black">
                             <i class="fab fa-apple"></i>
                         </div>
                         <h3 class="font-arcade text-lg text-white mb-2">APP STORE</h3>
-                        <p class="font-vt text-base text-gray-400 mb-6">Available now for iOS devices.</p>
+                        <p class="font-vt text-base text-pixel-yellow mb-6">Coming Soon to iOS devices!</p>
 
-                        <!-- QR Code Container -->
-                        <div class="bg-white p-3 border-2 border-pixel-wall mb-6 shadow-md">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://apps.apple.com/app/boddy/id123456789"
-                                alt="App Store QR Code" class="w-36 h-36">
+                        <!-- QR Code Placeholder Container -->
+                        <div class="bg-pixel-dark p-3 border-2 border-pixel-wall mb-6 shadow-md w-42 h-42 flex flex-col items-center justify-center text-gray-500">
+                            <i class="fas fa-clock text-4xl mb-2 text-pixel-yellow animate-pulse"></i>
+                            <span class="font-retro text-[10px] text-gray-400">IN DEVELOPMENT</span>
                         </div>
 
-                        <a href="https://apps.apple.com/app/boddy/id123456789" target="_blank" rel="noopener noreferrer"
-                            onclick="playAudio('coin')"
-                            class="w-full btn-retro font-arcade text-xs px-6 py-3.5 bg-pixel-blue text-black border-2 border-black hover:bg-white transition-all flex items-center justify-center space-x-2">
+                        <button disabled
+                            class="w-full font-arcade text-xs px-6 py-3.5 bg-pixel-wall text-gray-400 border-2 border-black cursor-not-allowed flex items-center justify-center space-x-2">
                             <i class="fab fa-apple text-base"></i>
-                            <span>DOWNLOAD ON APP STORE</span>
-                        </a>
+                            <span>COMING SOON</span>
+                        </button>
                     </div>
                 </div>
             </div>
